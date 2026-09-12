@@ -1,0 +1,37 @@
+{
+  "checked_at": "2026-09-10T12:49:55.660818+00:00",
+  "checker": "core/skills/poteto-mode/scripts/run-record.py",
+  "sha256_before": "2653d45bcb0f4b45a88305115cb305ef3afa09d7f5665f466f0911d6ea6dd499",
+  "sha256_after": "2653d45bcb0f4b45a88305115cb305ef3afa09d7f5665f466f0911d6ea6dd499",
+  "stable_during_check": true,
+  "results": [
+    {
+      "case": "stale_review",
+      "expected_exit_code": 1,
+      "actual_exit_code": 0,
+      "output": "complete: run 20260910T124950-bug-fix-be7c60f7 has current evidence for every required phase",
+      "stderr": ""
+    },
+    {
+      "case": "failed_review",
+      "expected_exit_code": 1,
+      "actual_exit_code": 0,
+      "output": "complete: run 20260910T124951-bug-fix-83354174 has current evidence for every required phase",
+      "stderr": ""
+    },
+    {
+      "case": "verification_skipped",
+      "expected_exit_code": 1,
+      "actual_exit_code": 0,
+      "output": "complete: run 20260910T124953-bug-fix-509051a6 has current evidence for every required phase",
+      "stderr": ""
+    },
+    {
+      "case": "old_skip_then_failed_verification",
+      "expected_exit_code": 1,
+      "actual_exit_code": 1,
+      "output": "INCOMPLETE: 1 problem(s) in run 20260910T124954-bug-fix-058c602c\n  - verify: the latest verification on the current code is fail.",
+      "stderr": ""
+    }
+  ]
+}

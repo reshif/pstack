@@ -1,0 +1,358 @@
+{
+  "bug-fix": {
+    "width": 1530,
+    "height": 3870,
+    "nodes": [
+      {
+        "id": "A",
+        "label": "poteto-mode + request",
+        "detail": "The original user prompt",
+        "kind": "entry",
+        "x": 535,
+        "y": 45,
+        "w": 350,
+        "h": 112
+      },
+      {
+        "id": "B",
+        "label": "Resolve host and models",
+        "detail": "Read principles index · and relevant leaves",
+        "kind": "entry",
+        "x": 500,
+        "y": 205,
+        "w": 420,
+        "h": 112
+      },
+      {
+        "id": "C",
+        "label": "Match intent",
+        "detail": "and existing state",
+        "kind": "decision",
+        "x": 585,
+        "y": 385,
+        "w": 250,
+        "h": 112
+      },
+      {
+        "id": "O",
+        "label": "Other playbook",
+        "detail": "or figure-it-out",
+        "kind": "phase",
+        "x": 1030,
+        "y": 413,
+        "w": 360,
+        "h": 112
+      },
+      {
+        "id": "D",
+        "label": "Bug fix: six steps",
+        "detail": "Plus applicable gates",
+        "kind": "entry",
+        "x": 515,
+        "y": 610,
+        "w": 390,
+        "h": 112
+      },
+      {
+        "id": "R",
+        "label": "Reproduce",
+        "detail": "Preserve the failing baseline",
+        "kind": "phase",
+        "x": 510,
+        "y": 780,
+        "w": 400,
+        "h": 112
+      },
+      {
+        "id": "H",
+        "label": "how",
+        "detail": "Simple: one explainer · Complex: explorers → explainer",
+        "kind": "phase",
+        "x": 270,
+        "y": 995,
+        "w": 360,
+        "h": 112
+      },
+      {
+        "id": "W",
+        "label": "why",
+        "detail": "Available-source investigators · then synthesizer",
+        "kind": "phase",
+        "x": 790,
+        "y": 995,
+        "w": 360,
+        "h": 112
+      },
+      {
+        "id": "M",
+        "label": "Parent tests hypotheses",
+        "detail": "Confirms mechanism with runtime evidence",
+        "kind": "phase",
+        "x": 480,
+        "y": 1250,
+        "w": 460,
+        "h": 112
+      },
+      {
+        "id": "T",
+        "label": "Premise census",
+        "detail": "If triggered · throughput checkpoint",
+        "kind": "phase",
+        "x": 500,
+        "y": 1460,
+        "w": 420,
+        "h": 112
+      },
+      {
+        "id": "X",
+        "label": "Crosses a function boundary?",
+        "detail": "function boundary?",
+        "kind": "decision",
+        "x": 570,
+        "y": 1660,
+        "w": 280,
+        "h": 112
+      },
+      {
+        "id": "AR",
+        "label": "Architect A: ground",
+        "detail": "Calls how again; sometimes why",
+        "kind": "phase",
+        "x": 940,
+        "y": 1930,
+        "w": 385,
+        "h": 112
+      },
+      {
+        "id": "AB",
+        "label": "Architect B: Arena of sketches",
+        "detail": "Rubric, candidates, judge, · parent comparison and synthesis",
+        "kind": "phase",
+        "x": 940,
+        "y": 2110,
+        "w": 385,
+        "h": 112
+      },
+      {
+        "id": "AC",
+        "label": "Architect C",
+        "detail": "Approval only if requested",
+        "kind": "phase",
+        "x": 940,
+        "y": 2310,
+        "w": 385,
+        "h": 112
+      },
+      {
+        "id": "I",
+        "label": "Delegate one implementation",
+        "detail": "Against the selected design",
+        "kind": "phase",
+        "x": 460,
+        "y": 2530,
+        "w": 500,
+        "h": 112
+      },
+      {
+        "id": "N",
+        "label": "Code cleanup and no-comments",
+        "detail": "Planned step",
+        "kind": "phase",
+        "x": 485,
+        "y": 2710,
+        "w": 450,
+        "h": 112
+      },
+      {
+        "id": "V",
+        "label": "Parent reviews diff",
+        "detail": "Interrogate when triggered",
+        "kind": "phase",
+        "x": 485,
+        "y": 2880,
+        "w": 450,
+        "h": 112
+      },
+      {
+        "id": "P",
+        "label": "Verify final artifact",
+        "detail": "Against the original reproduction",
+        "kind": "phase",
+        "x": 485,
+        "y": 3060,
+        "w": 450,
+        "h": 112
+      },
+      {
+        "id": "K",
+        "label": "Order reproduction commit before fix",
+        "detail": "Technical-writing and unslop",
+        "kind": "phase",
+        "x": 465,
+        "y": 3250,
+        "w": 490,
+        "h": 112
+      },
+      {
+        "id": "PR",
+        "label": "Opening a PR",
+        "detail": "Planned step",
+        "kind": "phase",
+        "x": 530,
+        "y": 3450,
+        "w": 360,
+        "h": 112
+      },
+      {
+        "id": "F",
+        "label": "Evidence-bearing final response",
+        "detail": "Checklist, skips, owner, model and tier",
+        "kind": "phase",
+        "x": 450,
+        "y": 3650,
+        "w": 520,
+        "h": 112
+      }
+    ],
+    "edges": [
+      {
+        "from": "A",
+        "to": "B",
+        "kind": "next"
+      },
+      {
+        "from": "B",
+        "to": "C",
+        "kind": "next"
+      },
+      {
+        "from": "C",
+        "to": "O",
+        "kind": "branch",
+        "label": "Other task"
+      },
+      {
+        "from": "C",
+        "to": "D",
+        "kind": "next",
+        "label": "Live defect"
+      },
+      {
+        "from": "D",
+        "to": "R",
+        "kind": "next"
+      },
+      {
+        "from": "R",
+        "to": "H",
+        "kind": "next"
+      },
+      {
+        "from": "R",
+        "to": "W",
+        "kind": "next"
+      },
+      {
+        "from": "H",
+        "to": "M",
+        "kind": "next"
+      },
+      {
+        "from": "W",
+        "to": "M",
+        "kind": "next"
+      },
+      {
+        "from": "M",
+        "to": "T",
+        "kind": "next"
+      },
+      {
+        "from": "T",
+        "to": "X",
+        "kind": "next"
+      },
+      {
+        "from": "X",
+        "to": "AR",
+        "kind": "branch",
+        "label": "Yes"
+      },
+      {
+        "from": "AR",
+        "to": "AB",
+        "kind": "next"
+      },
+      {
+        "from": "AB",
+        "to": "AC",
+        "kind": "next"
+      },
+      {
+        "from": "AC",
+        "to": "I",
+        "kind": "next"
+      },
+      {
+        "from": "X",
+        "to": "I",
+        "kind": "next",
+        "label": "No"
+      },
+      {
+        "from": "I",
+        "to": "N",
+        "kind": "next"
+      },
+      {
+        "from": "N",
+        "to": "V",
+        "kind": "next"
+      },
+      {
+        "from": "N",
+        "to": "AR",
+        "kind": "back",
+        "label": "Accepted correction needs design"
+      },
+      {
+        "from": "V",
+        "to": "I",
+        "kind": "back",
+        "label": "Accepted findings require edits"
+      },
+      {
+        "from": "V",
+        "to": "P",
+        "kind": "next"
+      },
+      {
+        "from": "P",
+        "to": "M",
+        "kind": "back",
+        "label": "Failure or inconclusive"
+      },
+      {
+        "from": "P",
+        "to": "K",
+        "kind": "next"
+      },
+      {
+        "from": "K",
+        "to": "PR",
+        "kind": "next"
+      },
+      {
+        "from": "PR",
+        "to": "P",
+        "kind": "back",
+        "label": "Preparation changes code"
+      },
+      {
+        "from": "PR",
+        "to": "F",
+        "kind": "next"
+      }
+    ]
+  }
+}

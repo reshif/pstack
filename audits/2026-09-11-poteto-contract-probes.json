@@ -1,0 +1,481 @@
+{
+  "recorder_sha256": "021e81266fc42455a8e4d6a9604295795ad79696925d0cd395e32817f7a9c5fc",
+  "routes_sha256": "165afd2093f1d7d6f30654f8c204978be25aa0684d03bb954c94bc664b439d69",
+  "empty_routes": [
+    {
+      "route": "authoring-a-skill",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034417-authoring-a-skill-bf712eac has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "autonomous-run",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034417-autonomous-run-b1604292 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "autopilot-full",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034418-autopilot-full-27ffb8ad has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "autopilot-stack",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7",
+        "step-8"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034418-autopilot-stack-61cb1c03 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "babysit",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7",
+        "step-8",
+        "step-9"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034419-babysit-c5a8bd68 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "bug-fix",
+      "phases": [
+        "reproduce",
+        "root-cause",
+        "plan",
+        "implement",
+        "cleanup",
+        "review",
+        "verify",
+        "commits",
+        "open-pr"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 1,
+        "stdout": "INCOMPLETE: 4 problem(s) in run 20260911T034420-bug-fix-8d94755b\n  - baseline: none recorded. Commit the failing check alone, then run: baseline --harness ...\n  - verify: no verification recorded.\n  - review: marked done with no review verdict recorded.\n  - implement: no returned implementation delegate recorded. Record it, or mark the phase with --note giving the parent's reason.",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "eval",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034420-eval-e872eea1 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "feature",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7",
+        "step-8"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034421-feature-9dcc5299 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "hillclimb",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7",
+        "step-8"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034422-hillclimb-56163c0c has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "investigation",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034422-investigation-baf779f7 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "multi-phase-plan",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034423-multi-phase-plan-2c52c058 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "opening-a-pr",
+      "phases": [
+        "worktree",
+        "commits",
+        "cleanup",
+        "reverify",
+        "write",
+        "create",
+        "readiness"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034423-opening-a-pr-32248333 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "orchestrate",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034424-orchestrate-dedd1cd7 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "pause-safely",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034425-pause-safely-fc08fcc8 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "perf-issue",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034425-perf-issue-cc3e3d89 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "prototype",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034426-prototype-36fdd05e has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "refactoring",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7",
+        "step-8"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034426-refactoring-73fe1894 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "runtime-forensics",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034427-runtime-forensics-2aa9d9ef has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "session-pickup",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034427-session-pickup-0713cfcd has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "shipping",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6",
+        "step-7",
+        "step-8",
+        "step-9"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034428-shipping-5a5a4ee3 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "trace-forensics",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034429-trace-forensics-50b9ed6a has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "visual-parity",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034429-visual-parity-e367ad79 has current evidence for every required phase",
+        "stderr": ""
+      }
+    },
+    {
+      "route": "worktree-cleanup",
+      "phases": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4",
+        "step-5",
+        "step-6"
+      ],
+      "evidence": 0,
+      "delegates": 0,
+      "check": {
+        "exit": 0,
+        "stdout": "complete: run 20260911T034430-worktree-cleanup-4e53cb4c has current evidence for every required phase",
+        "stderr": ""
+      }
+    }
+  ],
+  "feature-reversed": {
+    "exit": 0,
+    "stdout": "complete: run 20260911T034430-feature-e239d66c has current evidence for every required phase",
+    "stderr": ""
+  },
+  "feature-skipped": {
+    "exit": 0,
+    "stdout": "complete: run 20260911T034431-feature-7e0aba3b has current evidence for every required phase",
+    "stderr": ""
+  },
+  "narrowed-bug-fix": {
+    "exit": 0,
+    "stdout": "complete: run 20260911T034432-bug-fix-f3e1cbc4 has current evidence for every required phase",
+    "stderr": ""
+  },
+  "opening-pr-step-1": {
+    "exit": 2,
+    "stdout": "",
+    "stderr": "run-record: step-1 is not a phase of opening-a-pr: worktree, commits, cleanup, reverify, write, create, readiness"
+  },
+  "failed-review": {
+    "exit": 0,
+    "stdout": "complete: run 20260911T034432-custom-f888eefd has current evidence for every required phase",
+    "stderr": ""
+  },
+  "missing-verify-control": {
+    "exit": 1,
+    "stdout": "INCOMPLETE: 1 problem(s) in run 20260911T034433-custom-5a46ab40\n  - verify: no verification recorded.",
+    "stderr": ""
+  },
+  "bugfix-skipped-verification": {
+    "exit": 0,
+    "stdout": "complete: run 20260911T034433-bug-fix-d4164282 has current evidence for every required phase",
+    "stderr": ""
+  },
+  "bugfix-failed-review": {
+    "exit": 0,
+    "stdout": "complete: run 20260911T034434-bug-fix-4321189a has current evidence for every required phase",
+    "stderr": ""
+  },
+  "empty_routes_accepted": 22,
+  "imaginary-model-profile": {
+    "host": "codex",
+    "model": "gpt-imaginary-audit-only",
+    "errors": [],
+    "warnings": [],
+    "scope": "Local profile validation only; no model request was made."
+  }
+}

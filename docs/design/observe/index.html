@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>pstack — Session workspace · Design preview</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-stack" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z M3 12l9 5 9-5 M3 16l9 5 9-5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M6 7v10 M18 7c0 7-12 3-12 10"/></symbol>
+    <symbol id="i-flow" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="5" rx="1.5"/><rect x="2" y="17" width="7" height="5" rx="1.5"/><rect x="15" y="17" width="7" height="5" rx="1.5"/><path d="M12 7v5H5v5 M12 12h7v5"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 5h2 M9 5h12 M3 12h2 M9 12h12 M3 19h2 M9 19h8"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8l-5-5Z M14 3v5h5 M8 12h8 M8 16h6"/></symbol>
+    <symbol id="i-agents" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3 M16 5a3 3 0 0 1 0 6 M17 14a5 5 0 0 1 4 5v2"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8V4Z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14 M16 5v14"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14 M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-fit" viewBox="0 0 24 24"><path d="M9 3H3v6 M15 3h6v6 M3 15v6h6 M21 15v6h-6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12 M18 6 6 18"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16 m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-retry" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 8 M4 4v6h6"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6 M16 6l6 6-6 6 M14 3l-4 18"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="3"/><path d="m6 8 4 4-4 4 M13 16h5"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6 M10 3v7L4 19a1.4 1.4 0 0 0 1 2h14a1.4 1.4 0 0 0 1-2l-6-9V3 M7 15h10"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 15A9 9 0 0 1 9 3a9 9 0 1 0 11 12Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 1v2 M12 21v2 M1 12h2 M21 12h2 M4 4l2 2 M18 18l2 2 M4 20l2-2 M18 6l2-2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6 M12 7v1"/></symbol>
+    <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="13" rx="2"/><path d="m4 16-3 4h22l-3-4 M10 20h4"/></symbol>
+    <symbol id="i-skip" viewBox="0 0 24 24"><path d="m5 5 10 7-10 7V5Z M19 5v14"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m12 3 10 18H2L12 3Z M12 9v5 M12 17v1"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18 M3 12h18 M3 18h18"/></symbol>
+  </defs></svg>
+  <div class="app">
+    <aside class="sidebar" aria-label="Session navigation">
+      <a class="brand" href="#session=retry"><span class="brand-mark"><svg class="icon"><use href="#i-stack"/></svg></span>pstack<span class="brand-label">workspace</span></a>
+      <div class="workspace-label"><span class="workspace-avatar">R</span><div>Personal workspace<small>All local projects</small></div></div>
+      <label class="search"><svg class="icon"><use href="#i-search"/></svg><input id="search" type="search" placeholder="Find a session" aria-label="Find a session"><kbd>/</kbd></label>
+      <div class="list-heading"><span>Sessions</span><span class="count" id="session-count">4</span><select id="host-filter" aria-label="Filter by host"><option value="all">All hosts</option><option value="claude">Claude</option><option value="codex">Codex</option><option value="copilot">Copilot</option></select></div>
+      <nav id="session-list"></nav>
+      <div class="sidebar-bottom"><svg class="icon"><use href="#i-laptop"/></svg><div>Local workspace<small>Session history stays on your machine</small></div></div>
+    </aside>
+    <main>
+      <div class="topbar"><button class="icon-button mobile-menu" aria-label="Toggle sessions" id="menu"><svg class="icon"><use href="#i-menu"/></svg></button><div class="breadcrumb"><svg class="icon"><use href="#i-stack"/></svg><span id="project-crumb">uploader</span><svg class="icon"><use href="#i-chevron"/></svg><span>Sessions</span></div><div class="top-actions"><select id="direction" aria-label="Compare design directions"><option value="canvas">A · Workflow canvas</option><option value="journey">B · Task journey</option><option value="overview">C · Session overview</option></select><span class="preview-label"><span></span>Design preview <i>·</i> Sample data</span><button class="icon-button" id="theme" aria-label="Switch to dark theme" title="Switch theme"><svg class="icon"><use href="#i-moon"/></svg></button><button class="icon-button" id="design-note" aria-label="About this design" title="About this design"><svg class="icon"><use href="#i-info"/></svg></button></div></div>
+      <section id="session-heading"></section>
+      <div class="viewbar"><div class="tabs" role="tablist" aria-label="Session views" id="tabs"></div><div class="view-meta" id="view-meta"></div></div>
+      <div class="workbench" id="workbench"><section class="main-view" id="main-view" aria-label="Session content"></section><aside class="inspector" id="inspector" aria-label="Step details"></aside></div>
+    </main>
+  </div>
+  <dialog id="about"><form method="dialog"><button class="icon-button modal-close" aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></form><span class="eyebrow">PSTACK · DESIGN DIRECTIONS</span><h2>Follow the work.<br>Understand the decisions.</h2><p>A session workspace built around the task, its path, and the evidence behind each step.</p><ul><li><strong>Workflow:</strong> the recorded path, including parallel work and retries.</li><li><strong>Activity:</strong> your prompts and the agent’s actions, grouped into readable turns.</li><li><strong>Evidence:</strong> the results that support each outcome.</li></ul><p class="small">This is an interactive design prototype with sample data. It does not read or modify your sessions. Replay, summaries, and layouts here describe the proposed experience.</p><button class="primary-button" id="close-about">Explore the prototype <svg class="icon"><use href="#i-arrow"/></svg></button></dialog>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

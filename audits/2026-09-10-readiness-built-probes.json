@@ -1,0 +1,37 @@
+{
+  "checked_at": "2026-09-10T12:51:04.896915+00:00",
+  "checker": "dist/claude/.claude/skills/poteto-mode/scripts/run-record.py",
+  "sha256_before": "f76e78ae595c9e9532085392dffcebd88dd0045fc857c1a5828184ddc1990ce1",
+  "sha256_after": "f76e78ae595c9e9532085392dffcebd88dd0045fc857c1a5828184ddc1990ce1",
+  "stable_during_check": true,
+  "results": [
+    {
+      "case": "stale_review",
+      "expected_exit_code": 1,
+      "actual_exit_code": 0,
+      "output": "complete: run 20260910T125059-bug-fix has current evidence for every required phase",
+      "stderr": ""
+    },
+    {
+      "case": "failed_review",
+      "expected_exit_code": 1,
+      "actual_exit_code": 0,
+      "output": "complete: run 20260910T125101-bug-fix has current evidence for every required phase",
+      "stderr": ""
+    },
+    {
+      "case": "verification_skipped",
+      "expected_exit_code": 1,
+      "actual_exit_code": 0,
+      "output": "complete: run 20260910T125102-bug-fix has current evidence for every required phase",
+      "stderr": ""
+    },
+    {
+      "case": "old_skip_then_failed_verification",
+      "expected_exit_code": 1,
+      "actual_exit_code": 0,
+      "output": "complete: run 20260910T125103-bug-fix has current evidence for every required phase",
+      "stderr": ""
+    }
+  ]
+}

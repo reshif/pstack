@@ -1,0 +1,14 @@
+{
+  "installed_recorder_sha256": "a55129d58798b5f9b4ab0f26dd1cef68051393917a52482b4ccf1511b0462eb6",
+  "installed_routes_sha256": "d853f3db255e48c42bcce58bb0a55392e936fddc372b403efad6363655bf8955",
+  "checklist_items": 8,
+  "empty_feature_exit": 1,
+  "observer_complete": false,
+  "observer_problems": [
+    "step-4: no returned delegate recorded for this phase attempt.",
+    "step-5: no verify evidence for this phase attempt. Record evidence --kind verify --phase step-5.",
+    "step-7: no review evidence for this phase attempt. Record evidence --kind review --phase step-7."
+  ],
+  "builtin_override_rejected": true,
+  "source_matches_installed": true
+}

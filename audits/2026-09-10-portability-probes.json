@@ -1,0 +1,16 @@
+{
+  "doctor_with_invalid_json": {
+    "exit_code": 0,
+    "output": "No problems found."
+  },
+  "doctor_with_claude_profile_in_codex_install": {
+    "exit_code": 0,
+    "output": "No problems found."
+  },
+  "switch_claude_to_codex": {
+    "receipt_host": "codex",
+    "profile_host": "claude-code",
+    "models": "bug-fix: opus",
+    "both_skill_trees_present": true
+  }
+}

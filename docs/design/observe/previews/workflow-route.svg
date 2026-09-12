@@ -1,0 +1,440 @@
+<svg id="graph" role="group" aria-label="The complete poteto-mode bug-fix workflow" viewBox="0 0 1480 3850" xmlns="http://www.w3.org/2000/svg" width="1480" height="3850" style="width: 1480px; height: 3850px; position: static;"><style>@font-face { font-family: Workspace; src: local("Inter"), local("Inter Variable"), local("Geist"); font-display: swap; }
+:root { --ink: #1d293b; --muted: #758094; --faint: #a1aabb; --line: #e8ecf2; --surface: #fff; --canvas: #f7f9fc; --blue: #4f67ed; --blue-soft: #eef1ff; --green: #248874; --green-soft: #eaf6f0; --amber: #ae7424; --amber-soft: #fff6e8; --red: #c5545c; --red-soft: #fdf0f0; --sans: Workspace,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --mono: ui-monospace,"SFMono-Regular",Consolas,monospace; }
+* { box-sizing: border-box; }
+body { margin: 0px; font: 13px/1.5 var(--sans); color: var(--ink); background: var(--surface); }
+button, a, input { -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+button { border: 0px; background: none; }
+svg { width: 18px; height: 18px; fill: none; stroke: currentcolor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+h1, h2, h3, p { margin: 0px; }
+[hidden] { display: none !important; }
+.symbols { position: absolute; width: 0px; height: 0px; overflow: hidden; }
+#app { display: grid; grid-template-columns: 212px minmax(0px, 1fr); grid-template-rows: 52px minmax(0px, 1fr); height: 100dvh; overflow: hidden; }
+.sidebar { grid-row: 1 / 3; display: flex; flex-direction: column; padding: 25px 15px 18px; border-right: 1px solid var(--line); background: rgb(253, 253, 254); }
+.brand { display: flex; align-items: center; text-decoration: none; color: var(--ink); font-size: 24px; font-weight: 760; letter-spacing: -1px; gap: 9px; padding: 0px 8px; }
+.brand-mark { display: grid; place-items: center; width: 27px; height: 29px; border-radius: 7px; background: rgb(38, 51, 73); color: white; }
+.brand-mark svg { width: 18px; height: 18px; }
+.brand-sub { font-size: 11px; color: var(--muted); font-weight: 450; letter-spacing: 0px; margin-top: 5px; }
+.session-switch { display: flex; align-items: center; gap: 11px; border: 1px solid var(--line); border-radius: 9px; padding: 11px 12px; text-align: left; margin: 28px 0px 31px; background: white; font-size: 12px; }
+.session-switch small { display: block; font-size: 10px; color: var(--muted); margin-top: 2px; }
+.session-switch &gt; svg { color: var(--muted); }
+.chevron { margin-left: auto; color: var(--muted); }
+.side-heading { font-size: 9px; font-weight: 650; letter-spacing: 0.1em; color: var(--muted); display: flex; justify-content: space-between; padding: 0px 9px 13px; }
+.side-heading span { font-size: 8px; font-weight: 500; letter-spacing: 0.04em; }
+.phase-link { display: flex; align-items: center; gap: 10px; text-align: left; width: 100%; padding: 11px 10px; border-radius: 7px; position: relative; font-size: 12px; margin: 3px 0px; }
+.phase-link small { font-size: 9px; color: var(--muted); display: block; margin-top: 2px; }
+.phase-link .phase-number { width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 7px; font-size: 10px; color: var(--muted); background: white; }
+.phase-link.done .phase-number { color: var(--green); border-color: rgb(217, 236, 229); background: rgb(242, 249, 246); }
+.phase-link.done .phase-number svg { width: 13px; height: 13px; }
+.phase-link.active { background: var(--blue-soft); color: var(--blue); }
+.phase-link.active .phase-number { background: var(--blue); color: white; border-color: var(--blue); }
+.phase-link.active small { color: rgb(120, 135, 206); }
+.phase-link.failed .phase-number { color: var(--red); background: var(--red-soft); border-color: rgb(242, 217, 220); }
+.side-divider { height: 1px; background: var(--line); margin: 23px 9px 16px; }
+.side-link { display: flex; align-items: center; gap: 11px; font-size: 11px; color: var(--muted); padding: 10px; }
+.side-link svg { width: 15px; height: 15px; }
+.side-footer { margin-top: auto; display: flex; align-items: flex-start; gap: 8px; padding: 20px 9px 0px; font-size: 10px; color: var(--muted); }
+.side-footer small { display: block; font-size: 9px; line-height: 1.7; max-width: 140px; color: var(--faint); margin-top: 3px; }
+.preview-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-top: 5px; flex: 0 0 auto; }
+.topbar { grid-column: 2; display: flex; align-items: center; gap: 16px; padding: 0px 28px; border-bottom: 1px solid var(--line); }
+.breadcrumb { display: flex; align-items: center; gap: 12px; font-size: 11px; color: var(--muted); }
+.breadcrumb b { font-weight: 500; color: var(--ink); }
+.breadcrumb span { color: rgb(197, 203, 213); }
+.design-badge { margin-left: auto; border: 1px solid rgb(222, 227, 246); border-radius: 4px; background: rgb(247, 248, 255); color: rgb(126, 137, 188); font-size: 8px; letter-spacing: 0.1em; padding: 3px 6px; }
+.local-label { font-size: 10px; color: var(--faint); }
+main { grid-column: 2; min-width: 0px; min-height: 0px; display: flex; flex-direction: column; }
+.session-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 28px 21px; flex: 0 0 auto; }
+.heading-eyebrow { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 9px; letter-spacing: 0.06em; margin-bottom: 6px; }
+.host-symbol { font-size: 15px; line-height: 1; color: var(--ink); }
+.heading-eyebrow #branch-name { letter-spacing: 0px; font-size: 10px; }
+.meta-dot { color: rgb(203, 208, 217); padding: 0px 2px; }
+h1 { font-size: 24px; line-height: 1.35; letter-spacing: -0.65px; font-weight: 660; }
+.heading-status { text-align: right; }
+.status-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; border-radius: 6px; padding: 5px 8px; background: var(--blue-soft); color: var(--blue); }
+.status-pill::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentcolor; }
+.heading-status small { font-size: 9px; color: var(--muted); display: block; margin-top: 6px; }
+.canvas-shell { display: flex; flex-direction: column; flex: 1 1 0%; min-height: 0px; border-block: 1px solid var(--line); }
+.canvas-toolbar { height: 48px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0px 23px; gap: 15px; }
+.canvas-title { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 600; }
+.canvas-title svg { width: 15px; height: 15px; color: var(--blue); }
+.toolbar-divider { width: 1px; height: 13px; background: var(--line); margin: 0px 5px; }
+.flow-direction { font-size: 10px; font-weight: 400; color: var(--muted); }
+.toolbar-actions { display: flex; align-items: center; gap: 7px; }
+.toolbar-actions button { display: flex; align-items: center; gap: 6px; font-size: 10px; border: 1px solid var(--line); border-radius: 5px; padding: 5px 8px; }
+.toolbar-actions button:hover { background: var(--canvas); }
+.toolbar-actions svg { width: 13px; height: 13px; color: var(--muted); }
+.toolbar-actions #focus { color: var(--blue); border-color: rgb(220, 226, 251); background: rgb(250, 251, 255); }
+.toolbar-actions #focus svg { color: var(--blue); }
+.canvas-body { display: flex; flex: 1 1 0%; min-height: 0px; border-top: 1px solid var(--line); }
+.viewport { position: relative; flex: 1 1 0%; min-width: 0px; overflow: hidden; background-position-x: ; background-position-y: ; background-repeat: ; background-attachment: ; background-origin: ; background-clip: ; background-color: ; background-image: radial-gradient(rgb(220, 225, 237) 0.8px, transparent 0.8px); background-size: 20px 20px; cursor: grab; touch-action: none; }
+.viewport:active { cursor: grabbing; }
+.canvas-note { position: absolute; top: 17px; left: 21px; display: flex; align-items: center; gap: 9px; z-index: 1; padding: 5px 8px 5px 0px; border-radius: 4px; background: rgba(247, 249, 252, 0.91); pointer-events: none; font-size: 10px; color: var(--muted); }
+.sample-label { font-size: 7px; letter-spacing: 0.09em; background: rgb(238, 240, 245); border: 1px solid rgb(225, 229, 237); border-radius: 3px; padding: 3px 5px; color: rgb(136, 146, 164); }
+#graph { width: 1480px; height: 3400px; position: absolute; left: 0px; top: 0px; transform-origin: 0px 0px; overflow: visible; stroke: none; cursor: grab; }
+.workflow-edge { fill: none; stroke: rgb(201, 208, 223); stroke-width: 1.7; stroke-linecap: round; }
+.workflow-edge.taken { stroke: rgb(130, 175, 158); stroke-width: 2; }
+.workflow-edge.future { stroke-dasharray: 5, 5; }
+.workflow-edge.return { stroke: rgb(197, 152, 85); stroke-dasharray: 6, 5; opacity: 0.45; }
+.workflow-edge.return.taken { stroke: var(--amber); stroke-width: 2.5; opacity: 1; stroke-dasharray: 7, 5; }
+.edge-label rect { fill: var(--canvas); stroke: rgb(233, 227, 218); stroke-width: 1; }
+.edge-label text { fill: rgb(154, 128, 92); font: 11px var(--sans); stroke: none; }
+.edge-label.branch-label rect { fill: rgb(255, 255, 255); stroke: rgb(223, 228, 237); }
+.edge-label.branch-label text { fill: rgb(113, 128, 149); }
+.graph-group { fill: rgba(237, 244, 243, 0.5); stroke: rgb(220, 232, 228); stroke-dasharray: 4, 5; stroke-width: 1; }
+.graph-group.architect { fill: rgba(241, 239, 250, 0.4); stroke: rgb(229, 224, 242); }
+.group-heading { font: 10px var(--sans); letter-spacing: 1.5px; fill: rgb(128, 152, 144); stroke: none; }
+.group-heading.architect { fill: rgb(154, 141, 171); }
+.node { cursor: pointer; outline: none; }
+.node .node-body { fill: rgb(255, 255, 255); stroke: rgb(219, 225, 235); stroke-width: 1.3; filter: url("#node-shadow"); }
+.node:hover .node-body, .node:focus-visible .node-body { stroke: var(--blue); stroke-width: 2; }
+.node.selected .node-body { stroke: var(--blue); stroke-width: 2; }
+.node.active .node-body { stroke: var(--blue); stroke-width: 2; fill: rgb(252, 252, 255); filter: url("#active-shadow"); }
+.node.failed .node-body { stroke: rgb(217, 166, 170); fill: rgb(255, 253, 253); }
+.node.planned .node-body { fill: rgb(250, 251, 253); stroke: rgb(220, 225, 233); stroke-dasharray: 4, 3; filter: none; }
+.node.skipped .node-body { fill: rgb(249, 250, 251); stroke-dasharray: 4, 3; }
+.node.other .node-body { fill: rgb(244, 246, 250); filter: none; }
+.node .node-label { font: 600 17px var(--sans); fill: var(--ink); stroke: none; letter-spacing: -0.2px; }
+.node .node-subtitle { font: 12px var(--sans); fill: rgb(123, 134, 153); stroke: none; }
+.node .node-kicker { font: 10px var(--sans); fill: rgb(143, 153, 170); letter-spacing: 0.7px; stroke: none; }
+.node .node-status { font: 10px var(--sans); fill: rgb(145, 160, 176); stroke: none; }
+.node.done .node-status { fill: var(--green); }
+.node.active .node-status { fill: var(--blue); }
+.node.failed .node-status { fill: var(--red); }
+.node .node-icon-bg { fill: rgb(241, 244, 248); stroke: none; }
+.node.done .node-icon-bg { fill: var(--green-soft); }
+.node.active .node-icon-bg { fill: var(--blue-soft); }
+.node .node-icon { stroke: rgb(127, 141, 162); stroke-width: 1.5; fill: none; }
+.node.done .node-icon { stroke: var(--green); }
+.node.active .node-icon { stroke: var(--blue); }
+.node .state-dot { fill: rgb(196, 204, 216); stroke: none; }
+.node.done .state-dot { fill: var(--green); }
+.node.active .state-dot { fill: var(--blue); }
+.node.failed .state-dot { fill: var(--red); }
+.node .decision-text { font: 550 14px var(--sans); fill: var(--ink); stroke: none; }
+.node .port { fill: white; stroke: rgb(200, 209, 223); stroke-width: 1.2; }
+.node.active .port { stroke: var(--blue); }
+.node .attempt-tag { fill: var(--blue-soft); stroke: none; }
+.node .attempt-text { font: 10px var(--sans); fill: var(--blue); stroke: none; }
+.canvas-controls { display: flex; align-items: center; position: absolute; left: 20px; bottom: 54px; border: 1px solid rgb(224, 229, 239); background: white; box-shadow: rgba(23, 43, 72, 0.063) 0px 3px 10px; border-radius: 7px; height: 34px; cursor: default; overflow: hidden; }
+.canvas-controls button { width: 33px; height: 32px; display: grid; place-items: center; font-size: 17px; color: var(--muted); }
+.canvas-controls button:hover { background: var(--canvas); }
+.canvas-controls #zoom-level { font-size: 10px; color: var(--muted); width: 42px; text-align: center; }
+.canvas-controls &gt; span:empty { width: 1px; height: 17px; background: var(--line); margin-inline: 3px; }
+.canvas-controls svg { width: 14px; height: 14px; }
+.minimap { position: absolute; right: 18px; bottom: 52px; width: 118px; border: 1px solid rgb(224, 229, 239); border-radius: 8px; background: rgba(255, 255, 255, 0.95); padding: 8px 9px 6px; box-shadow: rgba(23, 43, 72, 0.03) 0px 3px 10px; cursor: default; }
+.minimap &gt; div { font-size: 7px; letter-spacing: 0.09em; color: var(--muted); display: flex; align-items: center; justify-content: space-between; }
+.minimap button { padding: 0px; font-size: 13px; color: var(--muted); }
+.minimap svg { width: 98px; height: 160px; display: block; stroke: none; cursor: crosshair; }
+.minimap small { display: block; text-align: center; color: var(--faint); font-size: 7px; margin-top: 5px; }
+.canvas-legend { position: absolute; bottom: 0px; left: 0px; right: 0px; height: 37px; display: flex; align-items: center; gap: 16px; padding: 0px 21px; background: rgba(247, 249, 252, 0.96); border-top: 1px solid rgb(228, 232, 240); font-size: 8px; color: rgb(139, 149, 166); cursor: default; }
+.canvas-legend span { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.canvas-legend i { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+.canvas-legend i.active { background: var(--blue); }
+.canvas-legend i.failed { background: var(--red); }
+.canvas-legend i.planned { background: none; border: 1px solid rgb(166, 177, 194); }
+.return-key { margin-left: auto; color: rgb(173, 136, 79); }
+#inspector { width: 312px; flex: 0 0 auto; background: white; border-left: 1px solid var(--line); overflow: auto; min-height: 0px; }
+.inspector-top { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px 11px; font-size: 9px; color: var(--muted); }
+.icon-button { padding: 3px; display: grid; place-items: center; color: var(--muted); }
+.icon-button svg { width: 14px; height: 14px; }
+.inspector-intro { padding: 8px 23px 22px; }
+.inspector-kicker { font-size: 9px; color: var(--blue); letter-spacing: 0.06em; margin-bottom: 8px; }
+.inspector-intro h2 { font-size: 22px; line-height: 1.3; letter-spacing: -0.55px; margin-bottom: 12px; font-weight: 620; }
+.inspector-intro p { font-size: 11px; line-height: 1.8; color: var(--muted); margin-top: 14px; }
+.detail-status { font-size: 9px; display: inline-flex; align-items: center; gap: 5px; background: var(--blue-soft); color: var(--blue); border-radius: 4px; padding: 4px 7px; }
+.detail-status.done { background: var(--green-soft); color: var(--green); }
+.detail-status.failed { background: var(--red-soft); color: var(--red); }
+.detail-status.planned, .detail-status.skipped { background: rgb(241, 243, 247); color: var(--muted); }
+.detail-tabs { display: flex; border-bottom: 1px solid var(--line); padding: 0px 22px; gap: 21px; }
+.detail-tabs button { font-size: 10px; color: var(--muted); padding: 10px 0px; position: relative; }
+.detail-tabs button.selected { color: var(--ink); }
+.detail-tabs button.selected::after { content: ""; position: absolute; bottom: -1px; left: 0px; right: 0px; height: 2px; background: var(--blue); }
+.detail-content { padding: 20px 22px 25px; font-size: 11px; }
+.detail-content h3 { font-size: 10px; font-weight: 550; color: var(--ink); margin: 23px 0px 10px; }
+.detail-content h3:first-child { margin-top: 0px; }
+.owner { display: flex; align-items: center; gap: 9px; padding-bottom: 15px; border-bottom: 1px solid var(--line); }
+.owner .avatar { width: 29px; height: 29px; display: grid; place-items: center; border-radius: 7px; background: rgb(241, 243, 249); border: 1px solid rgb(228, 232, 240); color: rgb(122, 135, 162); font-size: 11px; }
+.owner b { font-size: 10px; font-weight: 550; }
+.owner small { font-size: 9px; color: var(--muted); display: block; margin-top: 3px; }
+.owner &gt; span:last-child { font-size: 8px; color: var(--green); margin-left: auto; }
+.attempts { display: flex; gap: 6px; margin-top: 11px; }
+.attempts button { border: 1px solid var(--line); border-radius: 5px; font-size: 9px; padding: 5px 8px; color: var(--muted); }
+.attempts button.selected { background: var(--blue-soft); color: var(--blue); border-color: rgb(220, 225, 252); }
+.return-callout { margin: 15px 0px 17px; padding: 12px; border: 1px solid rgb(240, 227, 203); background: rgb(255, 251, 244); border-radius: 7px; color: rgb(148, 115, 66); font-size: 10px; line-height: 1.8; }
+.return-callout b { font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 5px; color: rgb(148, 108, 50); margin-bottom: 6px; }
+.return-callout svg { width: 12px; height: 12px; }
+.evidence-card { border: 1px solid var(--line); border-radius: 7px; overflow: hidden; margin: 10px 0px; }
+.evidence-card &gt; div { padding: 10px 12px; font-size: 10px; display: flex; align-items: center; gap: 7px; }
+.evidence-card svg { width: 13px; height: 13px; color: var(--muted); }
+.evidence-card span { margin-left: auto; color: var(--red); font-size: 8px; }
+.evidence-card code { display: block; padding: 10px 12px; background: rgb(247, 248, 251); border-top: 1px solid var(--line); font: 9px/1.8 var(--mono); color: rgb(101, 115, 137); overflow-wrap: anywhere; }
+.evidence-card .success { color: var(--green); }
+.detail-prose { font-size: 11px; line-height: 1.85; color: var(--muted); }
+.detail-prose code { font-size: 10px; }
+.detail-note { font-size: 9px; line-height: 1.8; color: var(--faint); padding-top: 17px; border-top: 1px solid var(--line); margin-top: 21px; }
+.original-prompt { font-size: 11px; line-height: 1.9; color: rgb(94, 110, 135); border-left: 2px solid rgb(197, 206, 248); padding-left: 12px; }
+.detail-content pre { font: 10px/1.8 var(--mono); white-space: pre-wrap; color: var(--muted); padding: 12px; background: rgb(248, 249, 252); border: 1px solid var(--line); border-radius: 6px; }
+.detail-activity { padding: 14px 0px; border-bottom: 1px solid var(--line); line-height: 1.9; color: var(--muted); font-size: 10px; }
+.detail-activity small { display: block; font: 8px var(--mono); color: var(--faint); margin-bottom: 5px; }
+.detail-activity b { font-weight: 550; color: var(--ink); }
+.transition-strip { height: 45px; flex: 0 0 auto; display: flex; align-items: center; gap: 10px; padding: 0px 23px; border-top: 1px solid var(--line); font-size: 10px; background: white; }
+.transition-strip &gt; svg { width: 14px; height: 14px; color: var(--amber); }
+.transition-strip .event-time { font: 9px var(--mono); color: var(--faint); }
+.transition-strip b { font-size: 10px; font-weight: 550; }
+.transition-strip .event-reason { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.transition-strip button { font-size: 9px; color: var(--blue); margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: 5px; }
+.transition-strip button svg { width: 12px; height: 12px; }
+.playback { height: 69px; flex: 0 0 auto; display: flex; gap: 13px; align-items: center; padding: 0px 26px; }
+.play-button { width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--muted); }
+.play-button svg { width: 12px; height: 12px; }
+.playback-label { font-size: 10px; white-space: nowrap; line-height: 1.6; }
+.playback-label small { display: block; font-size: 8px; color: var(--faint); }
+.history { margin: 0px 14px; flex: 1 1 0%; min-width: 50px; }
+.history-labels { display: flex; justify-content: space-between; font-size: 8px; color: var(--faint); margin-bottom: 2px; }
+.history-labels #history-label { color: var(--muted); }
+input[type="range"] { width: 100%; height: 3px; accent-color: var(--blue); cursor: pointer; display: block; margin: 9px 0px 0px; }
+#latest { display: flex; align-items: center; gap: 6px; font-size: 9px; color: var(--muted); white-space: nowrap; }
+#latest svg { width: 12px; height: 12px; }
+#sessions-popover { position: fixed; z-index: 20; top: 138px; left: 16px; width: 355px; border: 1px solid rgb(224, 229, 238); background: white; border-radius: 12px; box-shadow: rgba(27, 41, 75, 0.14) 0px 20px 60px; padding: 10px; }
+.popover-heading { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--muted); padding: 6px 6px 13px; }
+#sessions-popover &gt; button { display: flex; align-items: center; gap: 13px; text-align: left; padding: 13px 10px; border-radius: 8px; width: 100%; }
+#sessions-popover &gt; button:hover { background: var(--blue-soft); }
+#sessions-popover b { font-size: 11px; font-weight: 550; }
+#sessions-popover small { display: block; font-size: 9px; line-height: 1.8; color: var(--muted); margin-top: 4px; }
+#sessions-popover p { font-size: 9px; color: var(--faint); padding: 13px 8px 5px; border-top: 1px solid var(--line); margin-top: 8px; }
+.mobile-sessions { display: none; }
+@media (min-width: 1750px) {
+  #app { grid-template-columns: 230px minmax(0px, 1fr); }
+  #inspector { width: 335px; }
+  .session-heading { padding: 25px 31px; }
+  .canvas-note { font-size: 11px; }
+}
+@media (max-width: 1200px) {
+  #app { grid-template-columns: 184px minmax(0px, 1fr); }
+  .sidebar { padding-inline: 10px; }
+  .brand-sub { display: none; }
+  .session-heading { padding: 18px 23px; }
+  h1 { font-size: 21px; }
+  #inspector { width: 280px; }
+  .flow-direction, .toolbar-divider, .local-label { display: none; }
+  .canvas-toolbar { padding-inline: 18px; }
+  .canvas-legend { gap: 10px; font-size: 7px; }
+  .return-key { display: none; }
+  .inspector-intro, .detail-content { padding-inline: 18px; }
+  .inspector-intro h2 { font-size: 20px; }
+  .playback { gap: 9px; padding-inline: 20px; }
+  .playback-label small { display: none; }
+  .history { margin-inline: 8px; }
+  .transition-strip .event-reason { display: none; }
+}
+@media (max-width: 950px) {
+  .canvas-body { position: relative; }
+  #inspector { position: absolute; top: 0px; right: 0px; bottom: 0px; width: 300px; z-index: 4; box-shadow: rgba(19, 35, 64, 0.063) -12px 0px 40px; }
+  .heading-status small { display: none; }
+  .status-pill { font-size: 9px; }
+  .history-labels &gt; span:not(#history-label) { display: none; }
+  .history-labels { justify-content: center; }
+  .session-heading { gap: 10px; }
+  h1 { font-size: 19px; }
+}
+@media (max-width: 650px) {
+  #app { grid-template-columns: minmax(0px, 1fr); grid-template-rows: 45px minmax(0px, 1fr); }
+  .sidebar { display: none; }
+  .topbar, main { grid-column: 1; }
+  .topbar { padding: 0px 17px; gap: 10px; }
+  .breadcrumb { font-size: 10px; gap: 7px; }
+  .design-badge { font-size: 7px; }
+  .session-heading { padding: 17px; align-items: flex-start; }
+  .heading-eyebrow { font-size: 8px; }
+  .heading-eyebrow #branch-name { font-size: 9px; }
+  h1 { font-size: 19px; max-width: 260px; }
+  .heading-status { display: none; }
+  .canvas-toolbar { height: 45px; padding: 0px 14px; gap: 8px; }
+  .canvas-title { font-size: 10px; gap: 5px; }
+  .toolbar-actions { gap: 4px; }
+  .toolbar-actions button { font-size: 8px; padding: 5px; }
+  .toolbar-actions svg { width: 11px; height: 11px; }
+  .canvas-note { left: 15px; top: 12px; font-size: 8px; max-width: 90%; }
+  .sample-label { font-size: 6px; flex: 0 0 auto; }
+  .canvas-controls { left: 13px; bottom: 47px; }
+  .canvas-legend { padding-inline: 14px; gap: 12px; }
+  .minimap { width: 83px; right: 11px; bottom: 47px; padding: 7px; }
+  .minimap svg { width: 67px; height: 110px; }
+  .minimap &gt; div { font-size: 5px; }
+  .minimap small { font-size: 6px; }
+  .transition-strip { padding-inline: 14px; gap: 7px; font-size: 8px; }
+  .transition-strip b { font-size: 8px; }
+  .transition-strip .event-time { display: none; }
+  .transition-strip button { font-size: 8px; }
+  .playback { height: 62px; padding-inline: 14px; gap: 8px; }
+  .playback-label { font-size: 8px; max-width: 76px; white-space: normal; }
+  .play-button { width: 26px; height: 26px; flex: 0 0 auto; }
+  .history { margin-inline: 5px; }
+  #history-label { font-size: 7px; }
+  #latest { font-size: 8px; max-width: 60px; white-space: normal; }
+  #latest svg { display: none; }
+  #inspector { width: min(320px, 100%); }
+  #sessions-popover { top: 50px; left: 10px; right: 10px; width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}</style><defs><filter id="node-shadow" x="-15%" y="-30%" width="130%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#263959" flood-opacity=".035"/></filter><filter id="active-shadow" x="-15%" y="-30%" width="130%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#4f67ed" flood-opacity=".09"/></filter><marker id="arrow-future" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8Z" fill="#bfc9d9"/></marker><marker id="arrow-taken" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8Z" fill="#82af9e"/></marker><marker id="arrow-return" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8Z" fill="#b88744"/></marker><symbol id="icon-stack" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 16l9 5 9-5"/></symbol><symbol id="icon-flow" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="6" rx="1"/><rect x="2" y="16" width="7" height="6" rx="1"/><rect x="15" y="16" width="7" height="6" rx="1"/><path d="M12 8v4H5v4m7-4h7v4"/></symbol><symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol><symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></symbol><symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></symbol><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="icon-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M6 8v8m12-8c0 6-12 2-12 8"/></symbol><symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></symbol><symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m2-17a3 3 0 0 1 0 6m1 4a5 5 0 0 1 3 5v2"/></symbol><symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 2v5m0 10v5M2 12h5m10 0h5"/></symbol><symbol id="icon-fit" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></symbol><symbol id="icon-return" viewBox="0 0 24 24"><path d="m8 4-5 5 5 5M3 9h11a6 6 0 0 1 0 12h-3"/></symbol><symbol id="icon-file" viewBox="0 0 24 24"><path d="M14 2H4v20h16V8l-6-6Zm0 0v6h6M8 13h8m-8 4h6"/></symbol><symbol id="icon-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8V4Z"/></symbol><symbol id="icon-pause" viewBox="0 0 24 24"><path d="M8 4v16M16 4v16"/></symbol><symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol></defs><rect class="graph-group" x="235" y="940" width="950" height="465" rx="20"/><text class="group-heading" x="258" y="965">02 / PARALLEL INVESTIGATION → PARENT CONFIRMATION</text><rect class="graph-group architect" x="909" y="1878" width="448" height="580" rx="20"/><text class="group-heading architect" x="934" y="1903">ARCHITECT / WHEN A FUNCTION BOUNDARY IS CROSSED</text><path class="workflow-edge taken" data-from="A" data-to="B" d="M 710 135 V 205" marker-end="url(#arrow-taken)"><title>poteto-mode + request → Resolve host and models</title></path><path class="workflow-edge taken" data-from="B" data-to="C" d="M 710 310 V 385" marker-end="url(#arrow-taken)"><title>Resolve host and models → Match intent</title></path><path class="workflow-edge future" data-from="C" data-to="O" d="M 835 460 H 1030" marker-end="url(#arrow-future)"><title>Other task</title></path><path class="workflow-edge taken" data-from="C" data-to="D" d="M 710 535 V 610" marker-end="url(#arrow-taken)"><title>Live defect</title></path><path class="workflow-edge taken" data-from="D" data-to="R" d="M 710 702 V 780" marker-end="url(#arrow-taken)"><title>Bug fix: six steps → Reproduce</title></path><path class="workflow-edge taken" data-from="R" data-to="H" d="M 710 880 C 710 937.5 450 937.5 450 995" marker-end="url(#arrow-taken)"><title>Reproduce → how</title></path><path class="workflow-edge taken" data-from="R" data-to="W" d="M 710 880 C 710 937.5 970 937.5 970 995" marker-end="url(#arrow-taken)"><title>Reproduce → why</title></path><path class="workflow-edge taken" data-from="H" data-to="M" d="M 450 1117 C 450 1183.5 710 1183.5 710 1250" marker-end="url(#arrow-taken)"><title>how → Parent tests hypotheses</title></path><path class="workflow-edge taken" data-from="W" data-to="M" d="M 970 1117 C 970 1183.5 710 1183.5 710 1250" marker-end="url(#arrow-taken)"><title>why → Parent tests hypotheses</title></path><path class="workflow-edge taken" data-from="M" data-to="T" d="M 710 1362 V 1460" marker-end="url(#arrow-taken)"><title>Parent tests hypotheses → Premise census</title></path><path class="workflow-edge taken" data-from="T" data-to="X" d="M 710 1568 V 1660" marker-end="url(#arrow-taken)"><title>Premise census → Crosses a</title></path><path class="workflow-edge taken" data-from="X" data-to="AR" d="M 850 1742 H 1116.5 Q 1132.5 1742 1132.5 1758 V 1930" marker-end="url(#arrow-taken)"><title>Yes</title></path><path class="workflow-edge taken" data-from="AR" data-to="AB" d="M 1132.5 2034 V 2110" marker-end="url(#arrow-taken)"><title>Architect A: ground → Architect B: Arena of sketches</title></path><path class="workflow-edge taken" data-from="AB" data-to="AC" d="M 1132.5 2230 V 2310" marker-end="url(#arrow-taken)"><title>Architect B: Arena of sketches → Architect C</title></path><path class="workflow-edge taken" data-from="AC" data-to="I" d="M 1132.5 2412 C 1132.5 2471 710 2471 710 2530" marker-end="url(#arrow-taken)"><title>Architect C → Delegate one implementation</title></path><path class="workflow-edge future" data-from="X" data-to="I" d="M 710 1824 V 2485 Q 710 2505 710 2505 V 2530" marker-end="url(#arrow-future)"><title>No</title></path><path class="workflow-edge taken" data-from="I" data-to="N" d="M 710 2634 V 2710" marker-end="url(#arrow-taken)"><title>Delegate one implementation → Code cleanup and no-comments</title></path><path class="workflow-edge taken" data-from="N" data-to="V" d="M 710 2806 V 2880" marker-end="url(#arrow-taken)"><title>Code cleanup and no-comments → Parent reviews diff</title></path><path class="workflow-edge return future" data-from="N" data-to="AR" d="M 935 2758 H 1394 Q 1410 2758 1410 2742 V 1998 Q 1410 1982 1394 1982 H 1325" marker-end="url(#arrow-return)"><title>Accepted correction needs design</title></path><path class="workflow-edge return future" data-from="V" data-to="I" d="M 485 2932 H 356 Q 340 2932 340 2916 V 2598 Q 340 2582 356 2582 H 460" marker-end="url(#arrow-return)"><title>Accepted findings require edits</title></path><path class="workflow-edge taken" data-from="V" data-to="P" d="M 710 2984 V 3060" marker-end="url(#arrow-taken)"><title>Parent reviews diff → Verify final artifact</title></path><path class="workflow-edge return taken" data-from="P" data-to="M" d="M 485 3112 H 186 Q 170 3112 170 3096 V 1322 Q 170 1306 186 1306 H 480" marker-end="url(#arrow-return)"><title>Failure or inconclusive</title></path><path class="workflow-edge future" data-from="P" data-to="K" d="M 710 3164 V 3250" marker-end="url(#arrow-future)"><title>Verify final artifact → Order reproduction commit before fix</title></path><path class="workflow-edge future" data-from="K" data-to="PR" d="M 710 3372 V 3450" marker-end="url(#arrow-future)"><title>Order reproduction commit before fix → Opening a PR</title></path><path class="workflow-edge return future" data-from="PR" data-to="P" d="M 890 3497 H 1134 Q 1150 3497 1150 3481 V 3128 Q 1150 3112 1134 3112 H 935" marker-end="url(#arrow-return)"><title>Preparation changes code</title></path><path class="workflow-edge future" data-from="PR" data-to="F" d="M 710 3544 V 3650" marker-end="url(#arrow-future)"><title>Opening a PR → Evidence-bearing final response</title></path><g class="edge-label branch-label" transform="translate(932.5,460)"><rect x="-39" y="-11" width="78" height="22" rx="5"/><text text-anchor="middle" y="4">Other task</text></g><g class="edge-label branch-label" transform="translate(710,572.5)"><rect x="-42" y="-11" width="84" height="22" rx="5"/><text text-anchor="middle" y="4">Live defect</text></g><g class="edge-label branch-label" transform="translate(991.25,1742)"><rect x="-18" y="-11" width="36" height="22" rx="5"/><text text-anchor="middle" y="4">Yes</text></g><g class="edge-label branch-label" transform="translate(710,1940)"><rect x="-15" y="-11" width="30" height="22" rx="5"/><text text-anchor="middle" y="4">No</text></g><g class="edge-label" transform="translate(1410,2220) rotate(-90)"><rect x="-102.8" y="-11" width="205.6" height="22" rx="5"/><text text-anchor="middle" y="4">Accepted correction needs design</text></g><g class="edge-label" transform="translate(340,2675) rotate(-90)"><rect x="-99.89999999999999" y="-11" width="199.79999999999998" height="22" rx="5"/><text text-anchor="middle" y="4">Accepted findings require edits</text></g><g class="edge-label" transform="translate(170,1396) rotate(-90)"><rect x="-76.7" y="-11" width="153.4" height="22" rx="5"/><text text-anchor="middle" y="4">Failure or inconclusive</text></g><g class="edge-label" transform="translate(1150,3270) rotate(-90)"><rect x="-79.6" y="-11" width="159.2" height="22" rx="5"/><text text-anchor="middle" y="4">Preparation changes code</text></g><g class="node done " data-node="A" data-state="done" transform="translate(535,45)" role="button" tabindex="0" aria-label="ENTRY: poteto-mode + request. The original user prompt. Completed" aria-pressed="false"><title>ENTRY: poteto-mode + request. The original user prompt. Completed</title><rect class="node-body" width="350" height="90" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-play"/></svg>
+      <text class="node-kicker" x="59" y="28">ENTRY</text>
+      <text class="node-label" x="59" y="53">poteto-mode + request</text>
+      <text class="node-subtitle" x="59" y="75">The original user prompt</text>
+      <circle class="state-dot" cx="333" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="333" y="78">Completed</text>
+      <circle class="port" cx="175" cy="0" r="3"/><circle class="port" cx="175" cy="90" r="3"/></g><g class="node done " data-node="B" data-state="done" transform="translate(500,205)" role="button" tabindex="0" aria-label="CONTEXT: Resolve host and models. Read principles index. and relevant leaves. Completed" aria-pressed="false"><title>CONTEXT: Resolve host and models. Read principles index. and relevant leaves. Completed</title><rect class="node-body" width="420" height="105" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-users"/></svg>
+      <text class="node-kicker" x="59" y="28">CONTEXT</text>
+      <text class="node-label" x="59" y="51">Resolve host and models</text>
+      <text class="node-subtitle" x="59" y="73">Read principles index</text><text class="node-subtitle" x="59" y="91">and relevant leaves</text>
+      <circle class="state-dot" cx="403" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="403" y="93">Completed</text>
+      <circle class="port" cx="210" cy="0" r="3"/><circle class="port" cx="210" cy="105" r="3"/></g><g class="node done " data-node="C" data-state="done" transform="translate(585,385)" role="button" tabindex="0" aria-label="Decision: Match intent. and existing state. Completed" aria-pressed="false"><title>Decision: Match intent. and existing state. Completed</title><path class="node-body" d="M 125 0 L 250 75 L 125 150 L 0 75 Z"/>
+      <text class="node-kicker" text-anchor="middle" x="125" y="45">ROUTING</text>
+      <text class="decision-text" text-anchor="middle" x="125" y="69">Match intent</text>
+      <text class="decision-text" text-anchor="middle" x="125" y="90">and existing state</text><circle class="port" cx="125" cy="0" r="3"/><circle class="port" cx="125" cy="150" r="3"/></g><g class="node other " data-node="O" data-state="other" transform="translate(1030,413)" role="button" tabindex="0" aria-label="OTHER TASK: Other playbook. or figure-it-out. Other route" aria-pressed="false"><title>OTHER TASK: Other playbook. or figure-it-out. Other route</title><rect class="node-body" width="360" height="98" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-branch"/></svg>
+      <text class="node-kicker" x="59" y="28">OTHER TASK</text>
+      <text class="node-label" x="59" y="53">Other playbook</text>
+      <text class="node-subtitle" x="59" y="75">or figure-it-out</text>
+      <circle class="state-dot" cx="343" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="343" y="86">Other route</text>
+      <circle class="port" cx="180" cy="0" r="3"/><circle class="port" cx="180" cy="98" r="3"/></g><g class="node done " data-node="D" data-state="done" transform="translate(515,610)" role="button" tabindex="0" aria-label="SELECTED PLAYBOOK: Bug fix: six steps. Plus applicable gates. Completed" aria-pressed="false"><title>SELECTED PLAYBOOK: Bug fix: six steps. Plus applicable gates. Completed</title><rect class="node-body" width="390" height="92" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-flow"/></svg>
+      <text class="node-kicker" x="59" y="28">SELECTED PLAYBOOK</text>
+      <text class="node-label" x="59" y="53">Bug fix: six steps</text>
+      <text class="node-subtitle" x="59" y="75">Plus applicable gates</text>
+      <circle class="state-dot" cx="373" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="373" y="80">Completed</text>
+      <circle class="port" cx="195" cy="0" r="3"/><circle class="port" cx="195" cy="92" r="3"/></g><g class="node done " data-node="R" data-state="done" transform="translate(510,780)" role="button" tabindex="0" aria-label="01 · REPRODUCTION: Reproduce. Preserve the failing baseline. Completed" aria-pressed="false"><title>01 · REPRODUCTION: Reproduce. Preserve the failing baseline. Completed</title><rect class="node-body" width="400" height="100" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-code"/></svg>
+      <text class="node-kicker" x="59" y="28">01 · REPRODUCTION</text>
+      <text class="node-label" x="59" y="53">Reproduce</text>
+      <text class="node-subtitle" x="59" y="75">Preserve the failing baseline</text>
+      <circle class="state-dot" cx="383" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="383" y="88">Completed</text>
+      <circle class="port" cx="200" cy="0" r="3"/><circle class="port" cx="200" cy="100" r="3"/></g><g class="node done " data-node="H" data-state="done" transform="translate(270,995)" role="button" tabindex="0" aria-label="02 · MECHANISM: how. Simple: one explainer. Complex: explorers → explainer. Completed" aria-pressed="false"><title>02 · MECHANISM: how. Simple: one explainer. Complex: explorers → explainer. Completed</title><rect class="node-body" width="360" height="122" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-search"/></svg>
+      <text class="node-kicker" x="59" y="28">02 · MECHANISM</text>
+      <text class="node-label" x="59" y="51">how</text>
+      <text class="node-subtitle" x="59" y="73">Simple: one explainer</text><text class="node-subtitle" x="59" y="91">Complex: explorers → explainer</text>
+      <circle class="state-dot" cx="343" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="343" y="110">Completed</text>
+      <circle class="port" cx="180" cy="0" r="3"/><circle class="port" cx="180" cy="122" r="3"/></g><g class="node done " data-node="W" data-state="done" transform="translate(790,995)" role="button" tabindex="0" aria-label="02 · HISTORY: why. Available-source investigators. then synthesizer. Completed" aria-pressed="false"><title>02 · HISTORY: why. Available-source investigators. then synthesizer. Completed</title><rect class="node-body" width="360" height="122" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-branch"/></svg>
+      <text class="node-kicker" x="59" y="28">02 · HISTORY</text>
+      <text class="node-label" x="59" y="51">why</text>
+      <text class="node-subtitle" x="59" y="73">Available-source investigators</text><text class="node-subtitle" x="59" y="91">then synthesizer</text>
+      <circle class="state-dot" cx="343" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="343" y="110">Completed</text>
+      <circle class="port" cx="180" cy="0" r="3"/><circle class="port" cx="180" cy="122" r="3"/></g><g class="node active selected" data-node="M" data-state="active" transform="translate(480,1250)" role="button" tabindex="0" aria-label="02 · CONFIRMATION: Parent tests hypotheses. Confirms mechanism with runtime evidence. In progress" aria-pressed="true"><title>02 · CONFIRMATION: Parent tests hypotheses. Confirms mechanism with runtime evidence. In progress</title><rect class="node-body" width="460" height="112" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-target"/></svg>
+      <text class="node-kicker" x="59" y="28">02 · CONFIRMATION</text>
+      <text class="node-label" x="59" y="53">Parent tests hypotheses</text>
+      <text class="node-subtitle" x="59" y="75">Confirms mechanism with runtime evidence</text>
+      <circle class="state-dot" cx="443" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="443" y="100">In progress</text>
+      <rect class="attempt-tag" x="367" y="12" width="62" height="21" rx="5"/><text class="attempt-text" x="374" y="26">Attempt 2</text><circle class="port" cx="230" cy="0" r="3"/><circle class="port" cx="230" cy="112" r="3"/></g><g class="node done " data-node="T" data-state="done" transform="translate(500,1460)" role="button" tabindex="0" aria-label="APPLICABLE GATES: Premise census. If triggered · throughput checkpoint. Completed" aria-pressed="false"><title>APPLICABLE GATES: Premise census. If triggered · throughput checkpoint. Completed</title><rect class="node-body" width="420" height="108" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-check"/></svg>
+      <text class="node-kicker" x="59" y="28">APPLICABLE GATES</text>
+      <text class="node-label" x="59" y="53">Premise census</text>
+      <text class="node-subtitle" x="59" y="75">If triggered · throughput checkpoint</text>
+      <circle class="state-dot" cx="403" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="403" y="96">Completed</text>
+      <circle class="port" cx="210" cy="0" r="3"/><circle class="port" cx="210" cy="108" r="3"/></g><g class="node done " data-node="X" data-state="done" transform="translate(570,1660)" role="button" tabindex="0" aria-label="03 · DESIGN: Crosses a. function boundary?. Completed" aria-pressed="false"><title>03 · DESIGN: Crosses a. function boundary?. Completed</title><path class="node-body" d="M 140 0 L 280 82 L 140 164 L 0 82 Z"/>
+      <text class="node-kicker" text-anchor="middle" x="140" y="52">03 · DESIGN</text>
+      <text class="decision-text" text-anchor="middle" x="140" y="76">Crosses a</text>
+      <text class="decision-text" text-anchor="middle" x="140" y="97">function boundary?</text><circle class="port" cx="140" cy="0" r="3"/><circle class="port" cx="140" cy="164" r="3"/></g><g class="node done " data-node="AR" data-state="done" transform="translate(940,1930)" role="button" tabindex="0" aria-label="03 · ARCHITECT: Architect A: ground. Calls how again; sometimes why. Completed" aria-pressed="false"><title>03 · ARCHITECT: Architect A: ground. Calls how again; sometimes why. Completed</title><rect class="node-body" width="385" height="104" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-search"/></svg>
+      <text class="node-kicker" x="59" y="28">03 · ARCHITECT</text>
+      <text class="node-label" x="59" y="53">Architect A: ground</text>
+      <text class="node-subtitle" x="59" y="75">Calls how again; sometimes why</text>
+      <circle class="state-dot" cx="368" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="368" y="92">Completed</text>
+      <circle class="port" cx="192.5" cy="0" r="3"/><circle class="port" cx="192.5" cy="104" r="3"/></g><g class="node done " data-node="AB" data-state="done" transform="translate(940,2110)" role="button" tabindex="0" aria-label="03 · ARCHITECT: Architect B: Arena of sketches. Rubric, candidates, judge,. parent comparison and synthesis. Completed" aria-pressed="false"><title>03 · ARCHITECT: Architect B: Arena of sketches. Rubric, candidates, judge,. parent comparison and synthesis. Completed</title><rect class="node-body" width="385" height="120" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-users"/></svg>
+      <text class="node-kicker" x="59" y="28">03 · ARCHITECT</text>
+      <text class="node-label" x="59" y="51">Architect B: Arena of sketches</text>
+      <text class="node-subtitle" x="59" y="73">Rubric, candidates, judge,</text><text class="node-subtitle" x="59" y="91">parent comparison and synthesis</text>
+      <circle class="state-dot" cx="368" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="368" y="108">Completed</text>
+      <circle class="port" cx="192.5" cy="0" r="3"/><circle class="port" cx="192.5" cy="120" r="3"/></g><g class="node skipped " data-node="AC" data-state="skipped" transform="translate(940,2310)" role="button" tabindex="0" aria-label="03 · ARCHITECT: Architect C. Approval only if requested. Skipped · not requested" aria-pressed="false"><title>03 · ARCHITECT: Architect C. Approval only if requested. Skipped · not requested</title><rect class="node-body" width="385" height="102" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-check"/></svg>
+      <text class="node-kicker" x="59" y="28">03 · ARCHITECT</text>
+      <text class="node-label" x="59" y="53">Architect C</text>
+      <text class="node-subtitle" x="59" y="75">Approval only if requested</text>
+      <circle class="state-dot" cx="368" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="368" y="90">Skipped · not requested</text>
+      <circle class="port" cx="192.5" cy="0" r="3"/><circle class="port" cx="192.5" cy="102" r="3"/></g><g class="node done " data-node="I" data-state="done" transform="translate(460,2530)" role="button" tabindex="0" aria-label="03 · IMPLEMENTATION: Delegate one implementation. Against the selected design. Completed" aria-pressed="false"><title>03 · IMPLEMENTATION: Delegate one implementation. Against the selected design. Completed</title><rect class="node-body" width="500" height="104" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-code"/></svg>
+      <text class="node-kicker" x="59" y="28">03 · IMPLEMENTATION</text>
+      <text class="node-label" x="59" y="53">Delegate one implementation</text>
+      <text class="node-subtitle" x="59" y="75">Against the selected design</text>
+      <circle class="state-dot" cx="483" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="483" y="92">Completed</text>
+      <circle class="port" cx="250" cy="0" r="3"/><circle class="port" cx="250" cy="104" r="3"/></g><g class="node done " data-node="N" data-state="done" transform="translate(485,2710)" role="button" tabindex="0" aria-label="03 · CLEANUP: Code cleanup and no-comments. . Completed" aria-pressed="false"><title>03 · CLEANUP: Code cleanup and no-comments. . Completed</title><rect class="node-body" width="450" height="96" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-check"/></svg>
+      <text class="node-kicker" x="59" y="28">03 · CLEANUP</text>
+      <text class="node-label" x="59" y="53">Code cleanup and no-comments</text>
+      
+      <circle class="state-dot" cx="433" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="433" y="84">Completed</text>
+      <circle class="port" cx="225" cy="0" r="3"/><circle class="port" cx="225" cy="96" r="3"/></g><g class="node done " data-node="V" data-state="done" transform="translate(485,2880)" role="button" tabindex="0" aria-label="03 · REVIEW: Parent reviews diff. Interrogate when triggered. Completed" aria-pressed="false"><title>03 · REVIEW: Parent reviews diff. Interrogate when triggered. Completed</title><rect class="node-body" width="450" height="104" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-users"/></svg>
+      <text class="node-kicker" x="59" y="28">03 · REVIEW</text>
+      <text class="node-label" x="59" y="53">Parent reviews diff</text>
+      <text class="node-subtitle" x="59" y="75">Interrogate when triggered</text>
+      <circle class="state-dot" cx="433" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="433" y="92">Completed</text>
+      <circle class="port" cx="225" cy="0" r="3"/><circle class="port" cx="225" cy="104" r="3"/></g><g class="node failed " data-node="P" data-state="failed" transform="translate(485,3060)" role="button" tabindex="0" aria-label="04 · VERIFICATION: Verify final artifact. Against the original reproduction. Failed" aria-pressed="false"><title>04 · VERIFICATION: Verify final artifact. Against the original reproduction. Failed</title><rect class="node-body" width="450" height="104" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-code"/></svg>
+      <text class="node-kicker" x="59" y="28">04 · VERIFICATION</text>
+      <text class="node-label" x="59" y="53">Verify final artifact</text>
+      <text class="node-subtitle" x="59" y="75">Against the original reproduction</text>
+      <circle class="state-dot" cx="433" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="433" y="92">Failed</text>
+      <circle class="port" cx="225" cy="0" r="3"/><circle class="port" cx="225" cy="104" r="3"/></g><g class="node planned " data-node="K" data-state="planned" transform="translate(465,3250)" role="button" tabindex="0" aria-label="05 · COMMITS: Order reproduction commit before fix. Technical-writing and unslop. Not reached" aria-pressed="false"><title>05 · COMMITS: Order reproduction commit before fix. Technical-writing and unslop. Not reached</title><rect class="node-body" width="490" height="122" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-branch"/></svg>
+      <text class="node-kicker" x="59" y="28">05 · COMMITS</text>
+      <text class="node-label" x="59" y="53">Order reproduction commit before fix</text>
+      <text class="node-subtitle" x="59" y="75">Technical-writing and unslop</text>
+      <circle class="state-dot" cx="473" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="473" y="110">Not reached</text>
+      <circle class="port" cx="245" cy="0" r="3"/><circle class="port" cx="245" cy="122" r="3"/></g><g class="node planned " data-node="PR" data-state="planned" transform="translate(530,3450)" role="button" tabindex="0" aria-label="06 · PULL REQUEST: Opening a PR. . Not reached" aria-pressed="false"><title>06 · PULL REQUEST: Opening a PR. . Not reached</title><rect class="node-body" width="360" height="94" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-arrow"/></svg>
+      <text class="node-kicker" x="59" y="28">06 · PULL REQUEST</text>
+      <text class="node-label" x="59" y="53">Opening a PR</text>
+      
+      <circle class="state-dot" cx="343" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="343" y="82">Not reached</text>
+      <circle class="port" cx="180" cy="0" r="3"/><circle class="port" cx="180" cy="94" r="3"/></g><g class="node planned " data-node="F" data-state="planned" transform="translate(450,3650)" role="button" tabindex="0" aria-label="OUTCOME: Evidence-bearing final response. Checklist, skips, owner, model and tier. Not reached" aria-pressed="false"><title>OUTCOME: Evidence-bearing final response. Checklist, skips, owner, model and tier. Not reached</title><rect class="node-body" width="520" height="120" rx="12"/>
+      <rect class="node-icon-bg" x="16" y="21" width="29" height="29" rx="7"/>
+      <svg class="node-icon" x="23" y="28" width="15" height="15"><use href="#icon-file"/></svg>
+      <text class="node-kicker" x="59" y="28">OUTCOME</text>
+      <text class="node-label" x="59" y="53">Evidence-bearing final response</text>
+      <text class="node-subtitle" x="59" y="75">Checklist, skips, owner, model and tier</text>
+      <circle class="state-dot" cx="503" cy="25" r="3"/>
+      <text class="node-status" text-anchor="end" x="503" y="108">Not reached</text>
+      <circle class="port" cx="260" cy="0" r="3"/><circle class="port" cx="260" cy="120" r="3"/></g></svg>
