@@ -104,9 +104,10 @@ def test_page_uses_only_contract_api_paths():
 # ---------- mock server ----------
 
 class Mock:
-    def __init__(self, speed=4.0, ping=1.0):
+    def __init__(self, speed=4.0, ping=1.0, hold=False):
         self.proc = subprocess.Popen(
-            [sys.executable, str(MOCK), "--port", "0", "--speed", str(speed), "--ping", str(ping)],
+            [sys.executable, str(MOCK), "--port", "0", "--speed", str(speed), "--ping", str(ping)]
+            + (["--hold"] if hold else []),
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         line = self.proc.stdout.readline()
         m = re.search(r"(http://[\d.]+:\d+)/", line)
@@ -218,27 +219,13 @@ def test_mock_stream_sends_sessions_then_live_events(mock):
 # ---------- headless browser ----------
 
 DRIVER = r"""
-const { spawn } = require('child_process');
 const fs = require('fs');
 const [,, chrome, base, outdir, profile] = process.argv;
 const LIVE = 'claude:live-7c41-uploader';
 const out = { errors: [], checks: {}, shots: {} };
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function launch() {
-  return new Promise((resolve, reject) => {
-    const p = spawn(chrome, ['--headless=new', '--no-sandbox', '--disable-gpu', '--no-first-run',
-      '--no-default-browser-check', '--remote-debugging-port=0', '--user-data-dir=' + profile,
-      '--window-size=1500,950', 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
-    let buf = '';
-    const t = setTimeout(() => reject(new Error('chrome did not start: ' + buf)), 20000);
-    p.stderr.on('data', d => {
-      buf += d;
-      const m = /DevTools listening on (ws:\/\/[^\s]+)/.exec(buf);
-      if (m) { clearTimeout(t); resolve({ proc: p, ws: m[1] }); }
-    });
-  });
-}
+const launch = () => require(__LAUNCH__).launch(chrome, profile, ['--window-size=1500,950']);
 
 async function main() {
   const { proc, ws: browserWs } = await launch();
@@ -310,6 +297,8 @@ async function main() {
     await send('Runtime.enable'); await send('Log.enable'); await send('Page.enable'); await send('Network.enable');
     await send('Emulation.setDeviceMetricsOverride', { width: 1500, height: 950, deviceScaleFactor: 1, mobile: false });
     await send('Page.navigate', { url: base + '/' });
+    // The mock holds its scripted run until the page is open, however long Chrome took to start.
+    await fetch(base + '/__mock/start');
 
     // Session list fills from the stream; the live session appears once the script starts.
     await waitFor(`document.querySelectorAll('#list .srow').length >= 6`, 15000, 'six session rows');
@@ -483,14 +472,14 @@ def test_page_in_headless_browser(tmp_path):
         pytest.skip("no headless browser available (looked for chromium, google-chrome, Playwright's Chromium) or no node")
     SHOTS.mkdir(parents=True, exist_ok=True)
     driver = tmp_path / "driver.js"
-    driver.write_text(DRIVER)
-    m = Mock(speed=4.0, ping=1.0)
+    driver.write_text(DRIVER.replace("__LAUNCH__", json.dumps(str(TESTS / "browser_launch.js"))))
+    m = Mock(speed=4.0, ping=1.0, hold=True)
     try:
         r = subprocess.run([node, str(driver), chrome, m.base, str(SHOTS), str(tmp_path / "profile")],
                            capture_output=True, text=True, timeout=240)
     finally:
         m.close()
-    assert r.stdout.strip(), r.stderr
+    assert r.stdout.strip(), f"browser driver printed nothing (exit {r.returncode}): {r.stderr[-2000:]}"
     out = json.loads(r.stdout.strip().splitlines()[-1])
     (SHOTS / "results.json").write_text(json.dumps(out, indent=2))
     assert "fatal" not in out, out.get("fatal")

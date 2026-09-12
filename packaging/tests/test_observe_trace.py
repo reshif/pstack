@@ -119,6 +119,6 @@ def test_execution_workspace_in_browser(http_hub, tmp_path):
     session.ref = dataclasses.replace(session.ref, paths=(str(source),))
     result = subprocess.run([node, str(TESTS / "observe_execution_browser.js"), chrome,
         f"http://127.0.0.1:{port}", str(tmp_path / "browser"), str(tmp_path / "execution.png")],
-        capture_output=True, text=True, timeout=90)
+        capture_output=True, text=True, timeout=240)
     assert result.returncode == 0, result.stdout + result.stderr
     assert json.loads(result.stdout)["playbooks"] == 23

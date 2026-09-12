@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+const { launch } = require('./browser_launch.js');
 const fs = require('fs');
 const [,, chrome, base, profile, screenshot] = process.argv;
 const pending = new Map(), errors = [];
@@ -6,18 +6,9 @@ let browser, socket, counter = 0;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 function assert(value, message) { if (!value) throw new Error(message); }
 async function main() {
-  const browserUrl = await new Promise((resolve, reject) => {
-    browser = spawn(chrome, ['--headless=new', '--no-sandbox', '--disable-gpu', '--no-first-run',
-      '--remote-debugging-port=0', '--user-data-dir=' + profile, 'about:blank']);
-    let output = '';
-    const timer = setTimeout(() => reject(new Error('browser startup timed out')), 15000);
-    browser.stderr.on('data', data => {
-      output += data;
-      const match = output.match(/DevTools listening on (ws:\/\/[^\s]+)/);
-      if (match) { clearTimeout(timer); resolve(match[1]); }
-    });
-    browser.on('error', reject);
-  });
+  const started = await launch(chrome, profile);
+  browser = started.proc;
+  const browserUrl = started.ws;
   const port = new URL(browserUrl).port;
   const pages = await (await fetch('http://127.0.0.1:' + port + '/json/list')).json();
   socket = new WebSocket(pages.find(p => p.type === 'page').webSocketDebuggerUrl);

@@ -17,6 +17,7 @@ and parallel-step browser coverage uses the real recorder and server in test_obs
 Mock-only controls, never used by the page:
     GET /__mock/state   {"step": i, "steps": n, "done": bool}
     GET /__mock/drop    close every open stream, to exercise the page's reconnect
+    GET /__mock/start   begin the scripted run, when the server was started with --hold
 """
 import argparse
 import json
@@ -345,9 +346,13 @@ class Hub:
 class Script(threading.Thread):
     """Plays live_script.json into the world, broadcasting what the contract says the server sends."""
 
-    def __init__(self, world, hub, spec, speed):
+    def __init__(self, world, hub, spec, speed, hold=False):
         super().__init__(daemon=True)
         self.world, self.hub, self.speed = world, hub, speed
+        # With hold, the run waits for GET /__mock/start, so a slow client still sees it from the start.
+        self.go = threading.Event()
+        if not hold:
+            self.go.set()
         self.spec = spec
         self.steps = spec["steps"]
         self.index = 0
@@ -361,6 +366,7 @@ class Script(threading.Thread):
             time.sleep(s / self.speed)
 
     def run(self):
+        self.go.wait()
         for i, step in enumerate(self.steps):
             self.sleep(step.get("wait", 0))
             self.apply(step)
@@ -534,6 +540,9 @@ def make_handler(world, hub, script, ping, verbose):
                 self.stream(parse_qs(u.query).get("session", [None])[0])
             elif path == "/__mock/state":
                 self.send_json({"step": script.index, "steps": len(script.steps), "done": script.done})
+            elif path == "/__mock/start":
+                script.go.set()
+                self.send_json({"started": True})
             elif path == "/__mock/drop":
                 hub.drop_all()
                 self.send_json({"dropped": True})
@@ -568,12 +577,12 @@ def make_handler(world, hub, script, ping, verbose):
     return Handler
 
 
-def serve(port=8765, host="127.0.0.1", speed=1.0, ping=15.0, verbose=False):
+def serve(port=8765, host="127.0.0.1", speed=1.0, ping=15.0, verbose=False, hold=False):
     t0 = time.time()
     world = build_world(t0)
     hub = Hub()
     spec = json.loads((FIXTURES / "live_script.json").read_text())
-    script = Script(world, hub, spec, speed)
+    script = Script(world, hub, spec, speed, hold)
     httpd = ThreadingHTTPServer((host, port), make_handler(world, hub, script, ping, verbose))
     httpd.daemon_threads = True
     return httpd, script
@@ -586,8 +595,9 @@ def main(argv=None):
     ap.add_argument("--speed", type=float, default=1.0, help="multiply the scripted run's pace")
     ap.add_argument("--ping", type=float, default=15.0, help="seconds between SSE pings")
     ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--hold", action="store_true", help="play the script only after GET /__mock/start")
     a = ap.parse_args(argv)
-    httpd, script = serve(a.port, a.host, a.speed, a.ping, a.verbose)
+    httpd, script = serve(a.port, a.host, a.speed, a.ping, a.verbose, a.hold)
     print(f"observe mock listening on http://{a.host}:{httpd.server_address[1]}/", flush=True)
     script.start()
     try:

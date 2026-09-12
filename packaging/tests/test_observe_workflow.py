@@ -206,7 +206,7 @@ def test_workflow_in_browser_with_real_records(project, tmp_path):
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     try:
         import select
-        readable, _, _ = select.select([proc.stdout], [], [], 30)
+        readable, _, _ = select.select([proc.stdout], [], [], 150)
         assert readable, "browser did not reach parallel state"
         line = proc.stdout.readline().strip()
         assert line == "parallel-ready", line
