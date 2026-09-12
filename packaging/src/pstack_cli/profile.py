@@ -41,6 +41,10 @@ HOST_VENDOR = {"claude": "anthropic", "codex": "openai"}
 class Report:
     errors: List[str] = field(default_factory=list)
     warnings: List[str] = field(default_factory=list)
+    # Models a session addressed, from host.json `available_models`. None: no list recorded.
+    available: Optional[set] = None
+    # Concrete model -> every place it is configured, reported once by report_models().
+    unverified: dict = field(default_factory=dict)
 
 
 def host_key(name) -> Optional[str]:
@@ -68,9 +72,34 @@ def check_model(host: str, model: str, where: str, rep: Report) -> None:
     elif host == "generic":
         rep.warnings.append(f"{where}: `{model}` is a model name. On an unknown host every class "
                             "resolves to inherit until a model has been addressed")
-    else:
-        rep.warnings.append(f"{where}: availability of `{model}` is unverified; doctor checks configuration, "
-                            "not the host's model catalog. Confirm it with a session capability probe.")
+    elif rep.available is None or name not in rep.available:
+        rep.unverified.setdefault(model, []).append(where)
+
+
+def _places(wheres: List[str]) -> str:
+    """`a:21`, `a:23`, `b models.panel` -> `a:21, 23; b models.panel`."""
+    groups: dict = {}
+    for w in wheres:
+        path, sep, line = w.rpartition(":")
+        key, item = (path, line) if sep and line.isdigit() else (w, None)
+        groups.setdefault(key, [])
+        if item and item not in groups[key]:
+            groups[key].append(item)
+    return "; ".join(f"{k}:{', '.join(v)}" if v else k for k, v in groups.items())
+
+
+def report_models(rep: Report) -> None:
+    """One warning per unverified model, naming every place it is configured."""
+    for model, wheres in rep.unverified.items():
+        at = _places(wheres)
+        if rep.available is None:
+            rep.warnings.append(f"`{model}` ({at}): availability is unverified. doctor checks configuration, not "
+                                "the host's model catalog; setup-pstack records the models a session addressed "
+                                "in host.json `available_models`")
+        else:
+            rep.warnings.append(f"`{model}` ({at}) is not in host.json `available_models`, the models this "
+                                "session addressed. Rerun setup-pstack, or replace it with a listed model")
+    rep.unverified.clear()
 
 
 def check_host_json(path: Path, host: str, rep: Report, where: str = ".pstack/host.json") -> None:
@@ -139,6 +168,13 @@ def check_host_json(path: Path, host: str, rep: Report, where: str = ".pstack/ho
             rep.warnings.append(f"{where}: tier {tier} rests on capabilities taken from defaults, "
                                 f"not observed in a session: {', '.join(guessed)}")
 
+    available = raw.get("available_models")
+    if available is not None:
+        if isinstance(available, list) and all(isinstance(m, str) for m in available):
+            rep.available = {m.split()[0] for m in available if m.split()}
+        else:
+            rep.errors.append(f"{where}: available_models must be a list of model names")
+
     models = raw.get("models", {})
     if not isinstance(models, dict):
         rep.errors.append(f"{where}: models must be an object of class -> model")
@@ -205,6 +241,7 @@ def check_profile(target: Path, host: str) -> Report:
         if (d / "models.md").is_file():
             check_models_md(d / "models.md", key, sub, f".pstack/hosts/{d.name}/models.md")
         rep.warnings += [f"saved profile, not active: {e}" for e in sub.errors]
+    report_models(rep)
     return rep
 
 

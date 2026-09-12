@@ -176,8 +176,56 @@ def test_bespoke_routes_need_output_and_unique_phase_ids(run):
 
 
 def test_model_name_validation_discloses_unverified_availability():
-    from pstack_cli.profile import Report, check_model
+    from pstack_cli.profile import Report, check_model, report_models
     report = Report()
     check_model("codex", "gpt-imaginary-audit-only", "fixture", report)
+    report_models(report)
     assert not report.errors
     assert any("availability" in w and "unverified" in w for w in report.warnings)
+
+
+def _profile(tmp_path, host_json, models_md):
+    base = tmp_path / ".pstack"
+    base.mkdir()
+    (base / "host.json").write_text(json.dumps(host_json))
+    (base / "models.md").write_text(models_md)
+    return tmp_path
+
+
+HOST = {"host": "codex", "tier": 2,
+        "capabilities": {"DELEGATE": {"value": True, "source": "observed"},
+                         "PARALLEL": {"value": True, "source": "observed"},
+                         "MODEL_CHOICE": {"value": "partial", "source": "observed"}},
+        "models": {"deep": "gpt-a", "fast": "gpt-b", "panel": ["gpt-a", "gpt-c"]}}
+MODELS = "arena-runners: gpt-a, gpt-c\ninterrogate-reviewers: gpt-a, gpt-c\n"
+
+
+def test_a_model_is_reported_once_however_often_it_is_configured(tmp_path):
+    from pstack_cli.profile import check_profile
+    report = check_profile(_profile(tmp_path, HOST, MODELS), "codex")
+    about_a = [w for w in report.warnings if "`gpt-a`" in w]
+    assert len(about_a) == 1, report.warnings
+    assert "models.deep" in about_a[0] and "models.panel" in about_a[0]
+    assert ".pstack/models.md:1, 2" in about_a[0]
+
+
+def test_models_a_session_addressed_are_not_flagged(tmp_path):
+    from pstack_cli.profile import check_profile
+    host = {**HOST, "available_models": ["inherit", "gpt-a", "gpt-b", "gpt-c"]}
+    report = check_profile(_profile(tmp_path, host, MODELS), "codex")
+    assert not report.errors
+    assert not [w for w in report.warnings if "gpt-" in w], report.warnings
+
+
+def test_a_configured_model_the_session_did_not_address_is_named(tmp_path):
+    from pstack_cli.profile import check_profile
+    host = {**HOST, "available_models": ["gpt-a", "gpt-b"]}
+    report = check_profile(_profile(tmp_path, host, MODELS), "codex")
+    flagged = [w for w in report.warnings if "gpt-" in w]
+    assert len(flagged) == 1 and "`gpt-c`" in flagged[0] and "available_models" in flagged[0], flagged
+
+
+def test_available_models_must_be_a_list_of_names(tmp_path):
+    from pstack_cli.profile import check_profile
+    report = check_profile(_profile(tmp_path, {**HOST, "available_models": "gpt-a"}, MODELS), "codex")
+    assert any("available_models must be a list" in e for e in report.errors)

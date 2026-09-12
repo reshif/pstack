@@ -102,9 +102,13 @@ diversity has to come from stances. Four is the default width.
   },
   "tier": 2,
   "models": { "deep": "opus", "fast": "sonnet", "balanced": "sonnet", "panel": ["opus"] },
+  "available_models": ["inherit", "opus", "sonnet"],
   "notes": "Tier aliases only. Panel runs on stances."
 }
 ```
+
+`available_models` lists every model this session actually addressed in step 4, such as a delegate
+call that returned. Every concrete name in `models` and in `.pstack/models.md` must appear in it.
 
 `host` is this session's host key: `claude`, `codex`, `copilot`, `cursor`, `generic`, or `unknown`.
 It must name the host this project is installed for, because the file is that host's profile.
@@ -113,9 +117,10 @@ took it from the profile row. `tier` must follow from the capabilities by the ru
 the project switches hosts, `pstack update --host <key>` saves this file under
 `.pstack/hosts/<host>/` and restores the other host's copy, so each host keeps its own profile. Run
 `pstack doctor` after writing it: it rejects malformed JSON, a profile from another host, a tier the
-capabilities do not support, and recognizable model-vendor mismatches. It does not query model
-availability. Concrete model names remain unverified until a session successfully addresses them;
-record capability probes and follow the fallback ladder on failure.
+capabilities do not support, and recognizable model-vendor mismatches. It does not query the host's
+model catalog. It trusts the models in `available_models` and names any configured model missing from
+that list, once per model. Without the list, every concrete model is reported as unverified. Record
+what the probes reached, and follow the fallback ladder when a model fails.
 
 ## Step 7. Write `.pstack/models.md`
 
