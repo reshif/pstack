@@ -6,6 +6,8 @@ says about it. Case `edited_harness` is the failure from the bug-fix run audit, 
 git history: `git show 30b9dfb:audits/2026-09-10-bugfix-run-736701de.md`. The fix
 commit edited the harness, and only the original harness exposed the lost email.
 """
+import contextlib
+import io
 import os
 import re
 import subprocess
@@ -741,10 +743,15 @@ def unexpected_errors_exit_cleanly(r):
     mod.COMMANDS["status"] = broken
     cwd = os.getcwd()
     os.chdir(r.root)
+    err = io.StringIO()
     try:
-        assert mod.main(["status"]) == 2
+        with contextlib.redirect_stderr(err):
+            assert mod.main(["status"]) == 2
     finally:
         os.chdir(cwd)
+    message = err.getvalue()
+    assert "unexpected KeyError: 'surprise'" in message, message
+    assert "Traceback" not in message, message
 
 
 def nested_committed_repo_counts_by_content(r):
