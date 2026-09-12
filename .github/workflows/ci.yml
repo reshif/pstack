@@ -28,7 +28,7 @@ jobs:
         with:
           python-version-file: ".python-version"
 
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.1.0
 
       # pyyaml turns on the strict frontmatter parse in `make verify`; without it the step is skipped.
       - name: Install pyyaml
