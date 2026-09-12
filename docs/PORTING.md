@@ -152,16 +152,16 @@ GitHub-side detection of the Bugbot reviewer account, which is correct from any 
 
 An independent audit proved the earlier version of this recipe did not work: it regenerated every
 bug the port had already fixed, because those fixes were hand edits that no script replayed. Every
-hand edit is now either encoded in `build/normalize-pass4.py` or protected by making its file
+hand edit is now either encoded in `build/port/normalize-pass4.py` or protected by making its file
 port-owned, and the recipe is tested.
 
 ```bash
 git clone --depth 1 https://github.com/cursor/plugins.git
 
 # Files the port rewrote. Copy upstream AROUND them, never over them. The list is `port_owned`
-# in build/upstream.json. All four normalizers, check-upstream.py and pass 4's marker
+# in build/port/upstream.json. All four normalizers, check-upstream.py and pass 4's marker
 # assertions read the same list, so it cannot drift between them.
-PORT_OWNED=$(python3 -c "import json; print(' '.join('core/' + f for f in json.load(open('build/upstream.json'))['port_owned']))")
+PORT_OWNED=$(python3 -c "import json; print(' '.join('core/' + f for f in json.load(open('build/port/upstream.json'))['port_owned']))")
 mkdir -p /tmp/keep && for f in $PORT_OWNED; do mkdir -p /tmp/keep/$(dirname $f); cp $f /tmp/keep/$f; done
 
 # Copy ONTO core/, never delete core/ first: core/runtime/ and the two pstack agents
@@ -174,8 +174,8 @@ rm -f core/skills/poteto-mode/references/bugbot-triage.md
 # Restore AFTER the playbook move: the move would otherwise clobber a port-owned playbook.
 for f in $PORT_OWNED; do cp /tmp/keep/$f $f; done
 
-python3 build/normalize-core.py && python3 build/normalize-pass2.py \
-  && python3 build/normalize-pass3.py && python3 build/normalize-pass4.py
+python3 build/port/normalize-core.py && python3 build/port/normalize-pass2.py \
+  && python3 build/port/normalize-pass3.py && python3 build/port/normalize-pass4.py
 python3 build/gen-manifest.py && node build/build.mjs && node build/verify.mjs
 ```
 
@@ -191,7 +191,7 @@ upstream over every file that is not port-owned, so an unprotected edit is gone 
 re-derivation. Either encode it as a pass 4 rule, when it is a sentence or two, or make the file
 port-owned:
 
-1. Add it under `port_owned` in `build/upstream.json` with the sha256 of the upstream blob at the
+1. Add it under `port_owned` in `build/port/upstream.json` with the sha256 of the upstream blob at the
    recorded commit: `git -C plugins show <commit>:<upstream path> | sha256sum`, from a full clone
    (the shallow one above lacks the commit). `check-upstream.py`
    compares against that hash, so a later upstream change to the file becomes a conflict to merge
@@ -555,7 +555,7 @@ cron or CI. A port-caused exposure is the porter's to fix.
 Five independent reviewers audited one real `poteto-mode` bug-fix run end to end: its transcript,
 every delegate call, its artifacts and its shipped code. The run followed every node of the flow,
 yet took 39 minutes and shipped a fix that silently loses an email when a worker crashes mid-send.
-The audit is in `audits/2026-09-10-bugfix-run-736701de.md`. The changes below came out of it.
+The audit is in git history: `git show 30b9dfb:audits/2026-09-10-bugfix-run-736701de.md`. The changes below came out of it.
 
 **Clarifications, not divergences.** These restate what the author already wrote, in places a run
 reads at the moment it decides:
@@ -587,7 +587,7 @@ reads at the moment it decides:
 
 ### After the routing trace (2026-09-10)
 
-`audits/2026-09-10-poteto-routing-trace.md` followed one bug-fix route through every file it
+The routing-trace audit (in git history: `git show 30b9dfb:audits/2026-09-10-poteto-routing-trace.md`) followed one bug-fix route through every file it
 touches and found eight composition defects. Some are inherited from upstream. Others came from
 this port's runtime layer and its appended gates. Each change below closes one of them, and
 `build/check-routing.mjs` pins it in every built host.
@@ -636,5 +636,5 @@ Nothing in the port compared it to upstream as a live repository. `docs/PORTING.
 mechanical transformation in detail and, in doing so, made three judgment changes look like more of
 the same. The reviewer that caught it was the first one pointed at the repo instead of the tree.
 
-`build/check-upstream.py` now closes the mechanical half of that gap. The other half is a habit: a
+`build/port/check-upstream.py` now closes the mechanical half of that gap. The other half is a habit: a
 change that alters what the author decided gets its own heading, in its own words, saying so.

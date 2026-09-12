@@ -8,7 +8,7 @@ ensure_build_lock()
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CORE = ROOT / "core"
-UPSTREAM = json.loads((ROOT / "build" / "upstream.json").read_text())
+UPSTREAM = json.loads((ROOT / "build" / "port" / "upstream.json").read_text())
 
 # capability requirements that cannot be inferred from text
 REQUIRES = {

@@ -22,8 +22,8 @@ build:
 verify:
 	node build/verify.mjs
 	node build/check-routing.mjs
-	python3 build/test-build-lock.py
-	python3 build/test-run-record.py
+	python3 build/tests/test-build-lock.py
+	python3 build/tests/test-run-record.py
 	@if python3 -c "import yaml" 2>/dev/null; then \
 		python3 build/check-yaml.py; \
 	else \
@@ -84,7 +84,7 @@ test-cli: package
 # this port rewrites, which a re-derivation would otherwise discard in silence.
 upstream:
 	@test -n "$(UPSTREAM)" || { echo "usage: make upstream UPSTREAM=/path/to/cursor-plugins"; exit 2; }
-	python3 build/check-upstream.py "$(UPSTREAM)"
+	python3 build/port/check-upstream.py "$(UPSTREAM)"
 
 clean:
 	rm -rf dist packaging/dist packaging/src/pstack_cli/data

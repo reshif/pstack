@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - uses: astral-sh/setup-uv@v6
+
+      # pyyaml turns on the strict frontmatter parse in `make verify`; without it the step is skipped.
+      - name: Install pyyaml
+        run: python3 -m pip install pyyaml
+
+      # Manifest, per-host build, and verify: links, contracts, run-record cases, YAML.
+      - name: make all
+        run: make all
+
+      # Packages the builds into the CLI and runs its test suite.
+      - name: make test-cli
+        run: make test-cli
+
+      # The eval harness's own tests. Calls no model.
+      - name: make evals-test
+        run: make evals-test
+
+      # dist/ is generated and ignored; a build must leave no tracked file changed.
+      - name: Tree unchanged by the build
+        run: git diff --exit-code

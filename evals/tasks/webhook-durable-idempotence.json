@@ -1,7 +1,7 @@
 {
   "id": "webhook-durable-idempotence",
   "description": "Make the purchase webhook's welcome-email dedupe survive a restart and hold across worker processes.",
-  "source": "audits/2026-09-10-bugfix-run-736701de.md",
+  "source": "git show 30b9dfb:audits/2026-09-10-bugfix-run-736701de.md",
   "fixture": {
     "repo": "~/testpstack",
     "commit": "f13dd84",

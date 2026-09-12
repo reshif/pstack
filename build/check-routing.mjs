@@ -2,9 +2,10 @@
 // Check the bug-fix routing contract in every built host. verify.mjs proves a build is
 // well-formed. This proves its instructions still compose: one entry rule, caller inputs that
 // win, gates inside the step they guard, a return path for review findings, stale proof after a
-// later edit, and leaf briefs that stay leaves. The contract and its diagram nodes come from
-// audits/2026-09-10-poteto-routing-trace.md. A static check proves the instruction is present
-// and placed; only a replayed run proves a model follows it.
+// later edit, and leaf briefs that stay leaves. The contract and its diagram nodes come from the
+// routing-trace audit, in git history: `git show 30b9dfb:audits/2026-09-10-poteto-routing-trace.md`.
+// A static check proves the instruction is present and placed; only a replayed run proves a
+// model follows it.
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, dirname, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";

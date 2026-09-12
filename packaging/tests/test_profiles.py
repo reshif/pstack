@@ -1,4 +1,4 @@
-"""Per-host profiles. Each case is a failure audits/portability-probes.py reproduced.
+"""Per-host profiles. Each case is a failure a portability probe reproduced (history: commit 30b9dfb, audits/portability-probes.py).
 
 The probe showed doctor passing a malformed host.json and a Claude profile inside a
 Codex install, and a host switch leaving Claude's profile active under Codex.

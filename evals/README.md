@@ -32,7 +32,7 @@ evals/
 
 ## The task
 
-`webhook-durable-idempotence` is the rerun that `audits/2026-09-10-bugfix-run-736701de.md` asks
+`webhook-durable-idempotence` is the rerun that the bug-fix audit (in git history: `git show 30b9dfb:audits/2026-09-10-bugfix-run-736701de.md`) asks
 for. It uses the `~/testpstack` fixture at `f13dd84` and the audited prompt:
 
 > _claimed is process memory, so a restart or a second worker re-welcomes every purchase it has not seen. Fix it so idempotence survives a restart and holds across workers.

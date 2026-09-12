@@ -204,16 +204,14 @@ core/           vendor-neutral source of truth
   automations/  the benny automation pack
   docs/guide/   the 11-part user guide
   manifest.json generated: capability requirements per skill
-build/
-  normalize-core.py   strips host coupling from vendored upstream
-  normalize-pass2.py  residuals the bulk rules cannot do context-free
-  normalize-pass3.py  the automation pack and the guide
-  normalize-pass4.py  replays former hand edits, asserts port-owned files keep them
+build/          compiles core/ into dist/; see build/README.md
   gen-routes.py       compiles route-contracts.json into poteto-mode's routes.json
   gen-manifest.py     rebuilds manifest.json
   build.mjs           compiles core into dist/<host>/
   verify.mjs          proves the output, exits non-zero on failure
   check-yaml.py       strict YAML parse of every emitted frontmatter block
+  tests/              build-lock and run-record tests, run by `make verify`
+  port/               one-time upstream port: the four normalizers, check-upstream.py, upstream.json
 dist/           generated, per host. Do not edit.
 install.sh
 ```
@@ -229,7 +227,8 @@ builder, verifier, and packager. If another command is using the generated files
 the next one prints a waiting message. Make also keeps artifact stages ordered
 when invoked with `-j`, so verification cannot race a directory being rebuilt.
 
-There is no CI configuration in this repository; run the checks yourself. `make` is the gate: it
+CI (`.github/workflows/ci.yml`) runs `make all`, `make test-cli` and `make evals-test` on every push
+and pull request, then fails if the build changed any tracked file. Locally, `make` is the gate: it
 regenerates `dist/` (not committed) and `verify.mjs` checks every host's build. The re-derivation test
 in `docs/PORTING.md` proves the normalizers are idempotent. `make test-cli` covers installing into a
 directory with pre-existing content.
