@@ -49,7 +49,7 @@ Run the **arena** skill with the design-sketch task and the Phase A grounding ar
 
 Use your configured `architect-runners` (defaults the `panel` pool (see `runtime/roles.md`)).
 Pass that list to arena as its runner roster. It overrides `arena-runners` for this invocation.
-The rationale names the width that ran.
+Resolve aliases and rejected entries using arena Phase A. The rationale names the width that ran.
 
 Design it twice. Require at least two structurally distinct candidates before synthesis, even when the first looks sufficient. This is the **exhaust-the-design-space** principle skill made concrete. Whole-shape alternatives, not point fixes inside one shape. Stances do not produce structural distinctness on their own. Before spawning, name the structural starting point for each runner (for durable state, say, a store row taken by compare-and-swap, a filesystem marker, per-actor ledgers merged at read) and assign one per runner. Four stances on one shape are one candidate.
 
@@ -64,7 +64,7 @@ The exception is one specific empirical question the sketches genuinely disagree
 settle. Run a single narrow experiment on that question alone, per the Prototype playbook, and hand
 the answer to every candidate. That is one experiment, not one implementation per candidate.
 
-Screen every candidate against [`references/design-red-flags.md`](references/design-red-flags.md) before synthesis. Reject or revise shallow modules, information leakage, temporal decomposition, and pass-through methods.
+Screen every candidate against [`references/design-red-flags.md`](references/design-red-flags.md) before synthesis. Assume the next contributor is an agent that sees only the files it opened, copies the nearest example, and takes the shortest path that compiles. Prefer the design where a change that looks right from one file is right for the whole repo.
 
 Compare viable candidates on interface depth. Prefer the design that hides more complexity behind a smaller, simpler public surface. A rich interface can keep call chains short by concentrating capability instead of scattering it across layers.
 

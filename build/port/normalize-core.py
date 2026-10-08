@@ -11,6 +11,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 CORE = ROOT / "core"
 
 SLUG_CLASS = {
+    "claude-opus-5-5-xhigh": "deep",
+    "grok-4.7-xhigh-fast": "fast",
     "claude-fable-5-1-thinking-max": "deep",
     "claude-opus-5-thinking-xhigh": "deep",
     "gpt-5.6-sol-max": "balanced",
@@ -74,7 +76,7 @@ def normalize(text: str, rel: str) -> str:
     text = sub(r"`cursor-team-kit` publishes `control-cli` \(CLIs and TUIs\) and `control-ui` \(browser / Electron / web UIs\)\.",
                "Generate one with **create-verification-skill** if the project has none.", text, "team-kit")
     text = sub(r"the `cursor-team-kit` plugin", "the project's verification skills", text, "team-kit")
-    text = sub(r"`cursor-team-kit`", "the project's verification skills", text, "team-kit")
+    text = sub(r"(?<!ships in )`cursor-team-kit`", "the project's verification skills", text, "team-kit")
     text = sub(r"Cursor's built-in skill for authoring SKILL\.md files",
                "your host's skill-authoring guidance", text, "builtin")
     text = sub(r"\(Cursor's built-in for authoring SKILL\.md files\)",

@@ -9,6 +9,8 @@ Investigate the motivation and intent behind code.
 
 Companion to the `how` skill. `how` answers what the code does and how it works. `why` answers what forces led to its shape.
 
+Resolve each delegate's role through `.pstack/models.md` and `runtime/roles.md`. A missing role line uses its class default. `auto`, `inherit-parent`, and `inherit` leave the model and effort unset. If the host rejects a configured model, use a confirmed available class default and report the substitution. When the host supports model families, prefer the same family. Never treat an inheritance alias as a rejected identifier.
+
 ## Operating Posture
 
 Operate as a **careful, cautious, and precise investigator**. Be honest about what you know vs what you're inferring. Read `references/epistemics.md` for the full confidence framework and phrasing guide. The synthesizer must follow it.
@@ -86,7 +88,7 @@ Launch all matching investigators in a single message so they run concurrently. 
 
 Subagent config (each):
 - `role`: `pstack-reviewer` (read-only delegate)
-- `model`: your configured why-investigators model (default the `fast` class)
+- `model`: the `why-investigators` line, default the `fast` class
 - `access`: `read`. The delegate may call tools, including MCP tools. It must not write.
 
 Each investigator gets:
@@ -130,7 +132,7 @@ If your scope assessment suggests a single-commit trivial target where the PR de
 Spawn one synthesizer subagent:
 
 - `role`: `pstack-reviewer` (read-only delegate)
-- `model`: your configured why-synthesizer model (default the `deep` class)
+- `model`: the `why-synthesizer` line, default the `deep` class
 - `access`: `read`. The delegate may call tools, including MCP tools. It must not write.
 
 The synthesizer gets:

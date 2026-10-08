@@ -12,7 +12,24 @@ stats = Counter()
 PORT_OWNED = list(json.loads((CORE.parent / "build" / "port" / "upstream.json").read_text())["port_owned"])
 
 
+MODEL_ROLES = {
+    "how explorer": "how-explorer", "how explainer": "how-explainer",
+    "why investigators": "why-investigators", "why synthesizer": "why-synthesizer",
+    "reflect tooling": "reflect-tooling",
+    "reflect judgment, divergent, synthesizer": "reflect-judgment",
+}
+
+ROLE_CONFIG = (
+    "Resolve each delegate's role through `.pstack/models.md` and `runtime/roles.md`. "
+    "A missing role line uses its class default. `auto`, `inherit-parent`, and `inherit` "
+    "leave the model and effort unset. If the host rejects a configured model, use a confirmed "
+    "available class default and report the substitution. When the host supports model families, "
+    "prefer the same family. Never treat an inheritance alias as a rejected identifier."
+)
+
 RULES = [
+    (r"Each (?:spawn below|reviewer and the synthesizer) name(?:s)? a role line in the `pstack-models\.mdc` rule and a default\.[^\n]*", ROLE_CONFIG, "role-config"),
+
     # transcript store: every host has one, at a different path
     (r"Transcripts live at `~/\.cursor/projects/<slug>/agent-transcripts/<uuid>/<uuid>\.jsonl`, where `<slug>` is the workspace path with the leading slash dropped and each \"/\" turned into \"-\" \(so `/Users/you/proj` becomes `Users-you-proj`\)\. Every line is one chat message\.",
      "Transcripts live in the host's session store (`runtime/host-profile.md` names it per host). "
@@ -57,6 +74,8 @@ for p in sorted(CORE.rglob("*.md")):
     for pat, repl, key in RULES:
         t, n = re.subn(pat, repl, t)
         if n: stats[key] += n
+    for source, role in MODEL_ROLES.items():
+        t = t.replace("`" + source + "`", "`" + role + "`")
     if t != t0:
         p.write_text(t, encoding="utf-8")
 

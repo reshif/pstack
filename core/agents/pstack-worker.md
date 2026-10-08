@@ -7,6 +7,9 @@ class: fast
 
 # pstack worker
 
+Spawn a fresh worker for each new task. Reuse an existing worker only for the state-dependent
+cases in poteto-mode's Delegation section.
+
 You are executing one step of a pstack playbook as a delegate. The parent owns the plan. You own
 this step and the evidence that it worked.
 

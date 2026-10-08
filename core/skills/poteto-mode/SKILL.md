@@ -53,7 +53,7 @@ The Principles section below grounds every trigger. In your reply, name each pri
 Remaining triggers:
 
 - Nontrivial change, architecture decision, or "are we sure?" → the **how** skill.
-- About to ask the human on a "which approach", "how should I", or "what should this do" fork → classify it before you ask. If the answer is a fact you could observe by running something (behavior, timing, layout, output, perf, even whether an eval separates), it is not the human's to answer. Sketch it via the Prototype playbook (`playbooks/prototype.md`) and let the result decide. If the task is a read-only Investigation whose deliverable is a cited answer, stay in it and answer from the evidence rather than building a sketch. Reserve the question for a genuine product or preference call no experiment can settle.
+- About to ask the human on a "which approach", "how should I", or "what should this do" fork → classify it before you ask. If the answer is a fact you could observe by running something (behavior, timing, layout, output, perf, even whether an eval separates), it is not the human's to answer. Sketch it via the Prototype playbook (`playbooks/prototype.md`) and let the result decide. If the task is a read-only Investigation whose deliverable is a cited answer, stay in it and answer from the evidence rather than building a sketch. Reserve the question for a genuine product or preference call no experiment can settle. Under a full-autonomy grant, decide a call that the grant covers, act on it, and report it, with no reply word and no offer. Under the grant, apply a default for a call that only the operator can make. Report the default with a full explanation, and say in plain words what the operator could tell you to do instead. The operator answers in their own words. Never give a shorthand token to type back. Gates that the operator named and the Always-pause list in Autonomy still need the operator.
 - Any code → name the data shape first, and choose its organizing structure per **principle-model-the-domain**.
 - Code crossing a function boundary → the **architect** skill, parallel design exploration before implementing.
 - Parallel fan-out → the **swarm** skill for coverage matrices, races, gauntlets, and exploration partitions. Use **arena** for design or code bakeoffs with base selection and grafting.
@@ -64,6 +64,7 @@ Remaining triggers:
 - Before commit → strip code slop from the diff: unnecessary comments, defensive try/catch in trusted paths, `any` casts, needless nesting. Upstream uses `/deslop` from `cursor-team-kit`, which is not bundled here. This is a different gate from **unslop**, which is prose only.
 - Before review → the **no-comments** skill (`/no-comments`).
 - Shipping UI / IDE / CLI → the matching control skill. Generate one with **create-verification-skill** if the project has none. For bug fixes, reproduce first on the same surface yourself. Hand to the user only under the narrow Bug fix step 1 exception.
+- Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → the **benchmark-checklist** skill before you report or act on the number.
 - Any PR-status request → the **Babysit** playbook (`playbooks/babysit.md`), and not any similarly-named host built-in. That includes "babysit this", "get it green", "address the automated-reviewer comments", and the commonest phrasing, "check on PR X" / "anything outstanding on X". Never triggered by merely opening a PR. Declare its mode before polling. The playbook's step 1 owns the request-to-mode mapping. Reaching for `drive` inside a phase agent stops that agent finishing its turn.
 - Asked to land or ship a green stack → the **Shipping** playbook (`playbooks/shipping.md`). Green is not safe. Nothing gets armed before an independent per-PR verdict, and only the contiguous verified run from the root lands.
 - The automated reviewer or the agentic security review commented → skeptical posture. They catch real bugs and also file non-issues and nitpicks, so assess each on its merits and dismiss noise with a concrete reason instead of churning code. Triage fix / dismiss / ask per `references/automated-reviewer-triage.md`.
@@ -104,6 +105,8 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 - **Sequence Work into Verifiable Units** (**principle-sequence-verifiable-units**). Multi-step work (sweeps, migrations, runs of similar edits) and how you stack commits and PRs. Break work into small units that each end in a check, verify each before the next, and order delivery so the sequence proves itself.
 - **Test Behavior, Not Implementation** (**principle-test-behavior-not-implementation**). Writing, changing, or keeping a test. Call the code the way its users do and assert the result against a literal expected value. If the test would still pass when every imported function returns `undefined`, rewrite the assertion or delete the test.
 
+- **Explain the Number** (**principle-explain-the-number**). Before you trust, report, or act on a number you measured (a speedup, a regression, a throughput, a latency, or an eval result). Find what limits it, and rule out that it measured something other than the work you think.
+
 **Delegation**
 
 - **Guard the Context Window** (**principle-guard-the-context-window**). Context fills up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents, keep summaries in the main thread.
@@ -142,7 +145,7 @@ explicit `role` so `runtime/roles.md` can resolve the model class.
 **Tier code delegates by difficulty, not by importance.** The hardest changes (cross-cutting
 design, gnarly concurrency, subtle algorithms) take the `hardest-tasks` role and its `deep` class,
 whether the work needs judgment on vague intent or is a precisely specified sequence to execute to
-the letter. Trivial mechanical edits take `feature` and its `fast` class. Prose and judgment take
+the letter. Each code playbook uses its configured role (`feature`, `refactoring`, `bug-fix`, `perf-issue`, or `hillclimb`), defaulting to `fast`. Prose and judgment take
 `judgment-and-prose`.
 
 **The user's config wins.** A role pinned in `.pstack/models.md` overrides both the table in
@@ -155,11 +158,17 @@ tier. A panel that silently became one opinion is worse than no panel, because i
 agreement.
 
 **You own every delegate's work.** Review the diff. Write your own summary. Never pass its report
-through as your own words. A "done" is a claim, not evidence. Interrupt-chained resumes silently
-drop directives on several hosts, so fire a fresh delegate with consolidated scope rather than
-trusting a resumed one. A second opinion is the same prompt against a different model, or failing
-that a different stance. Agreement between genuinely independent runs is high signal. Agreement
-between two passes of one model in one context window is not.
+through as your own words. A "done" is a claim, not evidence. A second opinion is the same prompt
+against a different model, or failing that a different stance. Report the distinction.
+
+**Fresh delegates by default.** Give new work to a fresh delegate with consolidated scope: the
+original brief, every later directive, and the prior delegate's report and branch. This includes
+fix rounds, follow-ups, retries, and the next queue item. Reuse an existing delegate only when the
+new work strictly needs state that lives there and is costly to move: a local checkout,
+uncommitted changes, or a process still running, such as a dev server, simulator, or watcher.
+A stop or hold order is not reuse. A PR owner's role outlives its agent; after it returns, a fresh
+agent takes the next round. Interrupt-chained resumes can drop directives, so consolidate the
+brief rather than trusting a resumed delegate's summary.
 
 ## Writing the reply
 
@@ -212,7 +221,7 @@ A large or cross-cutting effort (a migration across many call sites, an ambitiou
 - **Autonomous run.** A long task to drive to completion without stopping ("run until done", "/loop until X"). `playbooks/autonomous-run.md`.
 - **Orchestrate.** A standing project handed to one coordinator chat: multi-day, many stacked PRs, dozens to hundreds of subagents, minimal human turns ("run this whole project", "own this migration until it lands"). Distinct from Autonomous run, which drives one task to a predicate. Work one agent could finish inside the session's budget routes there, not here, however program-shaped the phrasing sounds. `playbooks/orchestrate.md`.
 - **Autopilot-full.** A queue of independent PRs run to merged with full autonomy. One owner per PR carries build through merge, and the root swarm-verifies each merge-ready head before its owner merges ("autopilot this queue", "full autopilot", one-owner-per-PR programs). `playbooks/autopilot-full.md`.
-- **Autopilot-stack.** A queue of changes built and verified with full autonomy, delivered as one linear reviewed base-branch stack the operator lands herself ("autopilot-stack", "stack them, don't ship", "build the stack, I'll land it"). `playbooks/autopilot-stack.md`.
+- **Autopilot-stack.** A queue of changes built and verified with full autonomy, delivered as one linear reviewed base-branch stack the operator lands ("autopilot-stack", "stack them, don't ship", "build the stack, I'll land it"). `playbooks/autopilot-stack.md`.
 - **Session pickup.** Resuming or taking over a prior agent's in-flight work from a transcript, cloud-agent URL, or pushed branch. `playbooks/session-pickup.md`.
 - **Pause safely.** Suspending in-flight work cleanly so it can be resumed, on an explicit pause, going offline, a host restart, or imminent context compaction. The complement to Session pickup. Full steps: `playbooks/pause-safely.md`.
 - **Multi-phase or multi-PR plan.** Work that spans phases or stacked PRs. `playbooks/multi-phase-plan.md`.

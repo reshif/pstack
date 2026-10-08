@@ -1,6 +1,6 @@
 ---
 name: setup-pstack
-description: "Detect the current agent host, probe what it can actually do, and write the pstack config that every other pstack skill reads. Use for /setup-pstack, first-time pstack setup, 'configure pstack', changing pstack's model roles, or when pstack skills are degrading unexpectedly."
+description: "Detect the current agent host, probe what it can actually do, and write the pstack config that every other pstack skill reads. Use for /setup-pstack, first-time pstack setup, 'configure pstack', changing pstack's model roles or reasoning budget, or when pstack skills are degrading unexpectedly."
 ---
 
 # Setup pstack
@@ -65,7 +65,22 @@ model and the agent cannot, the list is `inherit` alone, and that is a complete 
 Never write a model identifier you have not confirmed is addressable in this session. `inherit` is
 always valid.
 
-## Step 5. Confirm the role mapping
+## Step 5. Budget, map, and confirm
+
+Read existing `.pstack/models.md` first. Preserve explicit model-family, list, and inheritance
+choices on re-runs. Drop retired role lines absent from `runtime/roles.md` and list them when
+confirming the new mapping. With no config, use the current role defaults.
+
+Ask for the reasoning budget through the host's structured question tool when available:
+`unlimited` requests `max`, `large` requests `xhigh`, `medium` requests `high`, and `small`
+requests `medium`. First setup defaults to `large`; re-runs show the saved budget. Apply the
+budget to each concrete model, including panel entries, using only model/effort combinations
+confirmed available on this host. Choose the highest supported effort at or below the request;
+if none is confirmed, mark the role as needing a choice. Hosts that cannot configure effort
+keep their own default and report the limitation. Inheritance aliases leave model and effort
+unset. Budget is stored as a comment in the role config; it is optional and can be removed to
+use the host's default effort.
+
 
 Show every role from `runtime/roles.md` with the class it resolves to and the concrete model that
 class picks on this host. Ask whether to accept as-is or override specific roles. Use a structured
@@ -73,17 +88,11 @@ question where the host has one, numbered prose options where it does not. Offer
 role: that is how a user on an auto-routing plan stays on it.
 
 Panel roles (`arena-runners`, `architect-runners`, `interrogate-reviewers`, `arena-cross-judge`)
-take a **list**, and the list length sets the fan-out. Width 4 suits `arena-runners` and
-`interrogate-reviewers`, which compare working artifacts. `architect-runners` compares design
-sketches, where the floor is two structurally distinct candidates and three is the practical
-default; a fourth sketch rarely changes the base and every extra runner is paid again if the rubric
-ever drifts into asking for running code. Write real entries, not the bare word
-`panel`: a single token reads as a single delegate and silently collapses a four-way bakeoff to one
-opinion.
-
-Where the host offers several models, list them. Where it offers one, write that one model repeated
-to the intended width and name the stance each entry carries, so the count survives even though the
-diversity has to come from stances. Four is the default width.
+take a list; its length sets the fan-out. The upstream default is two entries, one `deep` and one
+`fast`. Preserve a user's configured width. Write confirmed model identifiers, not the bare
+word `panel`. When only one model is available, keep two entries with distinct stances from
+`runtime/delegation.md`, and report that this does not provide cross-model diversity. Architect
+still requires two structurally distinct sketches, regardless of the number of available models.
 
 ## Step 6. Write `.pstack/host.json`
 
@@ -128,25 +137,26 @@ One line per role. A deleted line falls back to the class default in `runtime/ro
 
 ```
 # pstack role configuration. One line per role. Delete a line to fall back to the class default.
-# `inherit` means the role runs on the parent's model.
+# `inherit`, `inherit-parent`, and `auto` leave model and effort unset.
+# budget: large (xhigh)
 feature, refactoring: fast
-bug-fix: deep
-perf-issue: deep
-hillclimb: deep
+bug-fix: fast
+perf-issue: fast
+hillclimb: fast
 judgment-and-prose: deep
 hardest-tasks: deep
 how-explorer: fast
 how-explainer: deep
 why-investigators: fast
 why-synthesizer: deep
-reflect-tooling: balanced
+reflect-tooling: fast
 reflect-judgment: deep
 # Panel roles take a list. Length = fan-out. Replace these with real models.
-arena-runners: <model-a>, <model-b>, <model-c>, <model-d>
-arena-cross-judge: <model-a>, <model-b>, <model-c>, <model-d>
+arena-runners: <model-a>, <model-b>
+arena-cross-judge: <model-a>, <model-b>
 swarm-workers: fast
-architect-runners: <model-a>, <model-b>, <model-c>
-interrogate-reviewers: <model-a>, <model-b>, <model-c>, <model-d>
+architect-runners: <model-a>, <model-b>
+interrogate-reviewers: <model-a>, <model-b>
 comment-sicko: fast
 ```
 

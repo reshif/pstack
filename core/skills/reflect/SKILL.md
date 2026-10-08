@@ -27,19 +27,21 @@ For each candidate, read the first JSONL line and check that `message.content[0]
 
 ### 2. Spawn three reviewers in parallel
 
-One message, three delegate calls, the default delegate role, explicit `model:` on each, `access: read`. The reviewer may call tools, including MCP tools, for context lookups (tickets, chat threads, observability traces named in the transcript). It must not write. If this host's read-only mode also removes tool servers, run it in write mode with an explicit "do not modify any file" line instead, per `runtime/delegation.md`.
+One message, three delegate calls, the default delegate role, with `model` set as below, `access: read`. The reviewer may call tools, including MCP tools, for context lookups (tickets, chat threads, observability traces named in the transcript). It must not write. If this host's read-only mode also removes tool servers, run it in write mode with an explicit "do not modify any file" line instead, per `runtime/delegation.md`.
 
-| Lens | `model` | Prompt template |
-|---|---|---|
-| Judgment | your configured reflect-judgment model (default the `deep` class) | `references/judgment-reviewer.md` |
-| Tooling | your configured reflect-tooling model (default the `balanced` class) | `references/tooling-reviewer.md` |
-| Divergent | your configured reflect-judgment model (default the `deep` class) | `references/divergent-reviewer.md` |
+Resolve each delegate's role through `.pstack/models.md` and `runtime/roles.md`. A missing role line uses its class default. `auto`, `inherit-parent`, and `inherit` leave the model and effort unset. If the host rejects a configured model, use a confirmed available class default and report the substitution. When the host supports model families, prefer the same family. Never treat an inheritance alias as a rejected identifier.
+
+| Lens | Role line | Default `model` | Prompt template |
+|---|---|---|---|
+| Judgment | `reflect-judgment` | the `deep` class | `references/judgment-reviewer.md` |
+| Tooling | `reflect-tooling` | the `fast` class | `references/tooling-reviewer.md` |
+| Divergent | `reflect-judgment` | the `deep` class | `references/divergent-reviewer.md` |
 
 Pass each template verbatim, substituting the transcript path or digest where marked. Reviewers return findings in the delegate response body.
 
 ### 3. Synthesize
 
-One delegate call, the default delegate role, using your configured reflect-judgment model (default the `deep` class), `access: read`. The synthesizer spot-verifies citations, which can require MCP access. Same rule as above if this host's read-only mode strips tool servers. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
+One delegate call, the default delegate role, with `model` from the `reflect-judgment` line (default the `deep` class), `access: read`. The synthesizer spot-verifies citations, which can require MCP access. Same rule as above if this host's read-only mode strips tool servers. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
 
 ### 4. Structural enforcement check
 

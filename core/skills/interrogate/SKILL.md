@@ -34,14 +34,12 @@ Write one clear paragraph. If you're unsure about the intent, ask the user befor
 
 ## Step 3, Spawn Reviewers
 
-Launch all reviewers in a single message using the delegation protocol (`runtime/delegation.md`). Use the `interrogate-reviewers` list from `.pstack/models.md` when present, one reviewer per entry, extending or shrinking the Reviewer A/B/C/D labels below to the configured entry count. Otherwise use the table defaults.
+Launch all reviewers in a single message using the delegation protocol (`runtime/delegation.md`). Use the `interrogate-reviewers` list from `.pstack/models.md` when present, one reviewer per entry, extending or shrinking the Reviewer A/B labels below to the configured entry count. Otherwise use the table defaults.
 
 | Subagent | Default model |
 |----------|---------------|
 | Reviewer A | `panel[0]` |
 | Reviewer B | `panel[1]` |
-| Reviewer C | `panel[2]` |
-| Reviewer D | `panel[3]` |
 
 Take the entries from the `panel` pool in order (`runtime/roles.md`). Where the host offers fewer
 distinct models than reviewers, do not repeat a model: keep the reviewer count and give each a
@@ -50,10 +48,10 @@ prompt is one reviewer billed twice.
 
 For each reviewer:
 - `role`: `pstack-reviewer` (read-only delegate)
-- `model`: the configured `interrogate-reviewers` entry, or the table default with no configured line
+- `model`: the configured `interrogate-reviewers` entry, or the table default with no configured line. For `auto`, `inherit-parent`, or `inherit`, omit `model` to run on the parent model.
 - `access`: `read`
 
-If a model slug is rejected as unresolvable when you try to spawn the subagent, check the valid identifiers named in the host's error message, pick the closest equivalent (prefer the highest-reasoning tier of the same family), spawn with the valid slug, and open a separate PR to update the configured value or default table. Do not block the review on the slug issue. If the configured value is `inherit-parent` or `auto`, omit `model` instead. Never treat those aliases as broken slugs or enter this fallback for them.
+If the host rejects a configured entry, run that reviewer on its role's class default from `runtime/roles.md` and report the substitution. Where the host supports model families, prefer the same family; otherwise use a confirmed available class default. If it rejects a default, check the valid identifiers in the host's error message, pick the closest equivalent (prefer the same family and reasoning tier), spawn with it, and open a separate PR to update the default mapping. Do not block the review on the identifier issue. Never treat an inheritance alias as a rejected identifier or apply either fallback to it.
 
 Read `references/reviewer-prompt.md` and fill in the template with:
 1. The stated intent

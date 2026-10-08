@@ -58,7 +58,7 @@ const REF = {
 const write = (p, s) => { mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, s); };
 const read = (p) => readFileSync(p, "utf8");
 // Importing run-record.py during the build leaves bytecode beside it, and the manifest lists it.
-const shipped = (p) => !/(^|\/)__pycache__(\/|$)|\.pyc$/.test(p);
+const shipped = (p) => !/(^|\/)(?:__pycache__|node_modules|\.venv)(\/|$)|\.pyc$/.test(p);
 const walk = (d) => readdirSync(d).filter(shipped).flatMap((f) => {
   const p = join(d, f);
   return statSync(p).isDirectory() ? walk(p) : [p];
@@ -166,7 +166,7 @@ const HOSTS = {
     agentDir: ".agents/skills/pstack-runtime/personas", agentFile: (n) => `${n}.md`,
     memory: "AGENTS.md", tier: 2,
     caps: { BACKGROUND: true, ASK: false, TODO: true, MCP: true, TRANSCRIPTS: true, TRIGGER: false, CHANNEL: false },
-    models: { deep: "your strongest model at high/xhigh effort", fast: "a fast model at low effort", balanced: "the configured default" },
+    models: { deep: "your strongest model at high/xhigh effort", fast: "a fast model at the configured reasoning budget", balanced: "the configured default" },
     skillFm: (s) => ({ name: s.name, description: s.description }),
     agentFm: (a) => ({ name: a.name, description: a.description }),
   },
@@ -354,6 +354,19 @@ function rewrite(body, host, ctxDir, key) {
     const r = relative(ctxDir, target).replace(/\\/g, "/");
     return r.startsWith(".") ? r : "./" + r;
   };
+  // Help skills link to the source guide and README from their sibling skills directory.
+  body = body.replace(/\]\(\.\.\/\.\.\/docs\/guide\/([^)]*)\)/g,
+    (_m, f) => "](" + rel(join("docs/pstack-guide", f)) + ")");
+  body = body.replace(/\]\(\.\.\/\.\.\/README\.md\)/g,
+    "](" + rel("USAGE.md") + ")");
+  if (host.instrDir) {
+    body = body.replace(/\]\(\.\.\/([a-z0-9-]+)\/SKILL\.md\)/g, (m, name) => {
+      const target = manifest.skills.find((skill) => skill.dir === name);
+      return target?.paths ? "](" + rel(join(host.instrDir, host.instrFile(name))) + ")" : m;
+    });
+  }
+  body = body.replace(/\]\((?:\.\.\/)+runtime\/([a-z-]+\.md)\)/g,
+    (_m, f) => "](" + rel(join(host.runtimeDir, f)) + ")");
   // runtime/<f>.md  ->  host runtime location
   body = body.replace(/(?:`|\()runtime\/([a-z-]+\.md)(?:`|\))/g,
     (m, f) => (m[0] === "`" ? "`" : "(") + rel(join(host.runtimeDir, f)) + (m[0] === "`" ? "`" : ")"));
@@ -538,6 +551,10 @@ function buildHost(key) {
         (_m, n) => `${upToRoot}${host.skillDir}/${n}/`)
       .replace(/\.\.\/\.\.\/agents\/([a-z0-9-]+)\.md/g,
         (_m, n) => `${upToRoot}${host.agentDir}/${n}${key === "copilot" ? ".agent.md" : ".md"}`);
+    body = body.replace(/`runtime\/([a-z-]+\.md)`/g, (_m, name) => {
+      const target = relative(dirname(relative(out, dst)), join(host.runtimeDir, name)).replace(/\\/g, "/");
+      return "[\`runtime/" + name + "\`](" + target + ")";
+    });
     write(dst, body); stats.guide++;
   }
 
@@ -577,7 +594,7 @@ default_subagent_reasoning_effort = "medium"
 [agents.pstack-reviewer]
 sandbox_mode = "read-only"
 
-# pstack maps its model classes onto these: deep -> high/xhigh, fast -> low.
+# Model class selects the model; the saved pstack budget selects supported reasoning effort.
 model_reasoning_effort = "medium"
 `);
   }
@@ -743,6 +760,10 @@ See \`capabilities.md\` for the full ladder, and report the tier in any output t
 | \`balanced\` | ${m.balanced} |
 | \`panel\` | ${host.tier >= 3 ? "a list of genuinely different models" : "one model plus the stance set in `delegation.md`"} |
 | \`inherit\` | the parent's model. Always valid. |
+
+The role defaults and panel width come from \`roles.md\`. A saved \`# budget\` line in
+\`.pstack/models.md\` requests reasoning effort independently of model class. Resolve only
+confirmed model/effort combinations; inheritance aliases leave both unset.
 
 ## Where things live
 

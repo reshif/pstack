@@ -1,7 +1,7 @@
 # pstack, portable
 
 [pstack](https://github.com/cursor/plugins/tree/main/pstack) is Lauren Tan's engineering workflow
-for coding agents: 23 playbooks, 23 principles, 24 workflow skills, a Slack-triage automation pack,
+for coding agents: 23 playbooks, 24 principles, 27 workflow skills, a Slack-triage automation pack,
 and a router that directs agents to verify their work. It ships as a Cursor plugin and
 assumes Cursor's agent loop.
 
@@ -198,7 +198,7 @@ The port also carries the two parts of upstream that are not slash skills:
 ```
 core/           vendor-neutral source of truth
   runtime/      the portability layer, hand-authored, 7 files
-  skills/       47 skills
+  skills/       51 skills
   playbooks/    23 playbooks
   agents/       3 delegate personas
   automations/  the benny automation pack

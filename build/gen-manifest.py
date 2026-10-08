@@ -67,7 +67,7 @@ def kind(name):
 
 def shipped(p):
     # Bytecode is a local artifact of running a script, never part of a build.
-    return p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc"
+    return p.is_file() and not {"__pycache__", "node_modules", ".venv"}.intersection(p.parts) and p.suffix != ".pyc"
 
 skills = []
 for d in sorted((CORE / "skills").iterdir()):

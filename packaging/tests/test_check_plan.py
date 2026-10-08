@@ -75,6 +75,31 @@ def test_filled_plan_passes(tmp_path, newline):
     assert "1 PR sections, 0 problems" in r.stdout
 
 
+def test_old_audit_cadence_is_rejected(tmp_path):
+    lines, _ = mutate("- [ ] On the operator's go, schedule", lambda l: l.replace("hourly audit", "30-minute audit"))
+    r = check(write(tmp_path, lines))
+    assert r.returncode == 1
+    assert 'Program checklist lacks "hourly audit"' in r.stderr
+
+
+@pytest.mark.parametrize("model", ["grok-4.7-xhigh-fast", "gpt-6-sol"])
+def test_live_lanes_accept_the_resolved_worker_model(tmp_path, model):
+    lines, _ = mutate("**Verify, live.**", lambda l: l.replace("`gpt-6-sol`", f"`{model}`"))
+    r = check(write(tmp_path, lines))
+    assert r.returncode == 0, r.stdout + r.stderr
+
+
+@pytest.mark.parametrize("lanes", [
+    "Ten lanes on `<swarm workers model>` at the PR head",
+    "Ten lanes on the `fast` class at the PR head",
+])
+def test_live_lanes_require_a_filled_worker_model(tmp_path, lanes):
+    lines, _ = mutate("**Verify, live.**", lambda l: l.replace("Ten lanes on `gpt-6-sol` at the PR head", lanes))
+    r = check(write(tmp_path, lines))
+    assert r.returncode == 1
+    assert "with the model filled in" in r.stderr
+
+
 BOOT = "- [ ] Add `toCsv`"
 FALSE_POSITIVES = {
     "generic type in prose": ("Server-side zip", lambda l: l + " A Map<string, Row> held every row."),

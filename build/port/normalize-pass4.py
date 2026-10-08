@@ -22,6 +22,28 @@ if _probe.is_file() and "Cursor" not in _probe.read_text(encoding="utf-8"):
 
 # (path, old, new). A miss is not an error: upstream may have fixed it already.
 EDITS = [
+    ('skills/poteto-help/SKILL.md', 'Whether `/poteto-mode` stays on depends on how the user starts it:', "This build keeps mode state in `.pstack/mode.md` and the project's always-on instructions file, per `runtime/sticky-mode.md`."),
+    ('skills/poteto-help/SKILL.md', '- Enter on `/poteto-mode` attaches the skill to one message. It fades as the chat moves on.', '- Invoking `/poteto-mode` enters the project mode shim when the host supports persistent instructions.'),
+    ('skills/poteto-help/SKILL.md', "- `/deslop`, `control-cli`, and `control-ui` ship in the project's verification skills.", "- Upstream's `/deslop` ships in `cursor-team-kit`. This port includes a plain code-cleanup gate in Opening a PR. Use a project's existing `control-cli` or `control-ui` skill, or generate one with `/create-verification-skill`."),
+    ("playbooks/autopilot-full.md", "Subagents section", "Delegation section"),
+    ("playbooks/multi-phase-plan.md", "Subagents section", "Delegation section"),
+    ('skills/poteto-help/SKILL.md', 'pstack is built for Cursor. Its skills use the Agent Skills format, so other tools can read them. But most workflow skills, including `/poteto-mode`, `/how`, `/why`, and `/teach`, spawn Cursor subagents with per-role models, and Custom Modes and `/loop` are Cursor features, so those parts may not work there.', 'Upstream pstack targets Cursor. This portable build adapts delegation, model roles, persistent mode, and scheduling through `runtime/host-binding.md`. Probe this session with `/setup-pstack` before promising those capabilities.'),
+    ('skills/poteto-help/SKILL.md', "Whether `/poteto-mode` stays on depends on how the user starts it:\n\n- Enter on `/poteto-mode` attaches the skill to one message. It fades as the chat moves on.\n- Option+Enter on Mac or Alt+Enter on Windows, or Use as Mode from the skill entry, makes it a Custom Mode. It stays in context every turn until the user exits the mode.\n- the host's docs list Custom Modes in the Agents Window and the CLI. Elsewhere, start each new task with `/poteto-mode`.", "This build keeps mode state in `.pstack/mode.md` and the project's always-on instructions file, per `runtime/sticky-mode.md`. Cursor also offers Custom Modes. If the host cannot persist instructions, invoke `/poteto-mode` at the start of each task."),
+    ('skills/poteto-help/SKILL.md', '- Option+Enter on Mac or Alt+Enter on Windows, or Use as Mode from the skill entry, makes it a Custom Mode. It stays in context every turn until the user exits the mode, and it stays out of casual turns.', '- On Cursor, Option+Enter on Mac or Alt+Enter on Windows makes it a Custom Mode. Other hosts use the project mode shim in `runtime/sticky-mode.md`.'),
+    ('skills/poteto-help/SKILL.md', "- the host's docs list Custom Modes in the Agents Window and the CLI. Elsewhere, start each new task with `/poteto-mode`.", '- When this host cannot persist the mode shim, start each new task with `/poteto-mode`.'),
+    ('skills/poteto-help/SKILL.md', "Link [the host's skills docs](https://cursor.com/docs/skills) when this comes up.", "Read `runtime/sticky-mode.md` for this host's persistence mechanism."),
+    ('skills/poteto-help/SKILL.md', '`/poteto-mode` already uses `poteto-agent` for the subagents its playbook steps spawn.', '`/poteto-mode` uses the portable `pstack-worker` role for its playbook delegates.'),
+    ('skills/poteto-help/SKILL.md', '- `/loop` and `/create-skill` are Cursor built-ins.', "- Scheduling and skill authoring are host capabilities, not bundled pstack skills. Use the active host's scheduler and skill-authoring guidance."),
+    ('skills/poteto-help/SKILL.md', '`/loop` needs a check that can pass or fail, not a duration.', 'An unattended run needs a check that can pass or fail and a supported wake mechanism, not just a duration.'),
+    ('skills/poteto-help/SKILL.md', 'It was started with Enter. Start it as a Custom Mode, or start each task with `/poteto-mode`.', "Check `.pstack/mode.md` and the project's mode shim. If persistence is unavailable, start each task with `/poteto-mode`."),
+    ('skills/poteto-help/references/prompting.md', 'Write done as checks every iteration can run, and give `/loop` that predicate.', "Write done as checks every iteration can run, and give the host's supported loop or scheduler that predicate."),
+    ('skills/poteto-help/references/recipes.md', '/loop until done.', 'keep going until done.'),
+    ("skills/poteto-help/SKILL.md", "mention once that a Custom Mode keeps it on", "mention once how this host keeps the mode on, per `runtime/sticky-mode.md`"),
+    ("skills/poteto-help/SKILL.md", "the file's public copy: `https://github.com/cursor/plugins/blob/main/pstack/` followed by its path", "the matching public file under `https://github.com/reshif/pstack/blob/main/core/`; for generated host-specific files, link the repository's `USAGE.md` instead"),
+    ("skills/poteto-help/SKILL.md", "1. Install with `/add-plugin pstack` in chat, or from Customize in the sidebar.", "1. Install the portable build with `pstack init --host <host>` in the project. See the repository's installation instructions if the CLI is not installed."),
+    ("skills/poteto-help/SKILL.md", "It asks for a reasoning budget, maps a model to each role, and writes a rule. The rule applies to new chats.", "It probes this host, asks for a supported reasoning budget, maps models to roles, and writes `.pstack/host.json` and `.pstack/models.md`. New sessions read those files."),
+    ("skills/poteto-help/SKILL.md", "Only `/setup-pstack` loads from the user's words.", "Invoke `/setup-pstack` explicitly to configure the host."),
+    ("skills/poteto-help/SKILL.md", "No `verify-*` skill or other app harness", "No `control-*` skill, legacy `verify-*` skill, or other app harness"),
     # bulk-substitution grammar casualties
     ("playbooks/autopilot-stack.md", "skeptical the automated reviewer triage", "skeptical automated-reviewer triage"),
     ("playbooks/autopilot-full.md", "skeptical the automated reviewer triage", "skeptical automated-reviewer triage"),
@@ -337,7 +359,7 @@ for rel, marker, why in (
     ("runtime/delegation.md", "Reaching a routed skill", "routing is reading, not slash-invocation"),
     ("skills/poteto-mode/SKILL.md", "Session pickup** playbook", "the already-fixed trigger routes to Session pickup"),
     ("skills/poteto-mode/SKILL.md", "**Read one file, then start:**", "the bootstrap is lazy and points at host-binding.md"),
-    ("skills/setup-pstack/SKILL.md", "a single token reads as a single delegate", "panel roles must be written as a list"),
+    ("skills/setup-pstack/SKILL.md", "its length sets the fan-out", "panel roles must be written as a list"),
 ):
     q = CORE / rel
     if q.is_file() and marker not in q.read_text(encoding="utf-8"):
@@ -375,7 +397,7 @@ PORT_MARKERS = {
     "docs/guide/05-build-and-clean.md": ("a delegate with write access", "(in `cursor-team-kit`)"),
     "docs/guide/06-verify-and-ship.md": ("{{SKILL_DIR}}/control-cli/",),
     # merge authority: only autopilot-full and shipping merge unattended
-    "playbooks/autopilot-full.md": ("Irreversible actions still pause", "A countersign covers only such a raise"),
+    "playbooks/autopilot-full.md": ("Irreversible actions still pause", "that countersign is the approval for that raise only"),
     "playbooks/autopilot-stack.md": ("Irreversible actions still pause", "It grants none over landing"),
     "playbooks/babysit.md": ("Irreversible actions still pause", "It grants none over merging"),
     # Tier 0 closes a delegation step with a parent note in the run record

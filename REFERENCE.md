@@ -5,7 +5,7 @@ capability notes are the ones that actually shipped here.
 
 If you only read one thing, read the top of `USAGE.md`. This file is the depth behind it.
 
-**Contents.** [Skills](#skills) (24) · [Playbooks](#playbooks) (23) · [Principles](#principles) (23) · [Delegates](#delegates) (3)
+**Contents.** [Skills](#skills) (27) · [Playbooks](#playbooks) (23) · [Principles](#principles) (24) · [Delegates](#delegates) (3)
 
 ---
 
@@ -328,6 +328,42 @@ TypeScript patterns, applied automatically on .ts and .tsx files.
 **Common mistake.** Assuming it covers design. It covers types; `/architect` covers shape.
 
 <sub>`.claude/skills/typescript-best-practices/SKILL.md`</sub>
+
+### `/benchmark-checklist`
+
+Vet a perf measurement (limiter, tuning, limits, errors, repeatability, relevance, and whether the work happened) before you report or act on it.
+
+**Reach for it when** the description matches.
+
+**How to use it well.** See the skill file.
+
+**Common mistake.** None recorded.
+
+<sub>`.claude/skills/benchmark-checklist/SKILL.md`</sub>
+
+### `/correct`
+
+Find the mistakes agents keep repeating in this repo and make each one impossible.
+
+**Reach for it when** the description matches.
+
+**How to use it well.** See the skill file.
+
+**Common mistake.** None recorded.
+
+<sub>`.claude/skills/correct/SKILL.md`</sub>
+
+### `/poteto-help`
+
+Guides users through pstack setup, /poteto-mode, and picking the skill, playbook, or principle for a task.
+
+**Reach for it when** the description matches.
+
+**How to use it well.** See the skill file.
+
+**Common mistake.** None recorded.
+
+<sub>`.claude/skills/poteto-help/SKILL.md`</sub>
 
 ---
 

@@ -133,8 +133,10 @@ it the skill carries a note saying how it adapts.
 | `/architect` | Sketch types, signatures, and module structure before code, then stay in the loop while implementation fills in. | DELEGATE + PARALLEL + MODEL_CHOICE |
 | `/arena` | Spawn N parallel candidates at the same task, pick a base, graft the strongest parts of the losers into it. | DELEGATE + PARALLEL + MODEL_CHOICE |
 | `/automate-me` | Use for "automate me", "create/update/refresh my -mode skill", "turn/capture my preferences or working style into a skill", or wanting agents to follow how the user works. | TRANSCRIPTS + DELEGATE + PARALLEL |
+| `/benchmark-checklist` | Vet a perf measurement (limiter, tuning, limits, errors, repeatability, relevance, and whether the work happened) before you report or act on it. | any host |
 | `/blast-radius` | Find what a change could break somewhere else before it ships, beyond the diff, and prove the one fact it's safe because of by running real code instead of writing it up. | any host |
 | `/bro` | Restate the last message in plain human language, with no jargon. | any host |
+| `/correct` | Find the mistakes agents keep repeating in this repo and make each one impossible. | any host |
 | `/create-verification-skill` | Generate a project-local verification skill that drives your app the way a user does — any language, framework, or platform. | any host |
 | `/figure-it-out` | Design an auditable playbook when no narrower one fits: a large migration, an ambitious multi-part change, or work a human reviews after stepping away. | any host |
 | `/how` | Use for "how does X work", code walkthroughs before changing something, and placement / ownership / layering questions ("where should this live", "which package owns this", "is this the right layer"). | DELEGATE |
@@ -142,6 +144,7 @@ it the skill carries a note saying how it adapts.
 | `/maintain-verification-skill` | Periodic pass that keeps a project's verification skill and feature map honest: parallel source readers per feature, one live session driving every feature, at most one PR of proven corrections. | DELEGATE + PARALLEL |
 | `/make-bot-ui` | Use when building a custom UI (page, dashboard, buttons) that should wake an agent over a webhook or trigger, when the user must supply a sender key, or when exposing that UI on Tailscale. | TRIGGER |
 | `/no-comments` | Spawn comment-sicko, fix accepted findings, and offer encodings for claimed constraints. | DELEGATE |
+| `/poteto-help` | Guides users through pstack setup, /poteto-mode, and picking the skill, playbook, or principle for a task. | any host |
 | `/recall` | Reconstruct your recent working context from your own chat history, live state, and the shared record (user reports, prior fixes, incidents), then hand back a tight current-state brief. | TRANSCRIPTS + DELEGATE + PARALLEL |
 | `/reflect` | Spawn three parallel review subagents over the active transcript, surface learnings, and route each to a concrete edit on an existing skill. | DELEGATE + PARALLEL + MODEL_CHOICE |
 | `/show-me-your-work` | Keep a reviewable decision trail for long-running or unattended work: a TSV log with one row per decision (what, why, evidence, result). | DELEGATE + MODEL_CHOICE |
@@ -157,7 +160,7 @@ it the skill carries a note saying how it adapts.
 
 Reference material. The router cites them; open one directly when you want the reasoning.
 
-`attack-the-premise`, `boundary-discipline`, `build-the-lever`, `encode-lessons-in-structure`, `exhaust-the-design-space`, `experience-first`, `fix-root-causes`, `foundational-thinking`, `guard-the-context-window`, `laziness-protocol`, `make-operations-idempotent`, `migrate-callers-then-delete-legacy-apis`, `minimize-reader-load`, `model-the-domain`, `never-block-on-the-human`, `outcome-oriented-execution`, `prove-it-works`, `redesign-from-first-principles`, `separate-before-serializing-shared-state`, `sequence-verifiable-units`, `subtract-before-you-add`, `test-behavior-not-implementation`, `type-system-discipline`
+`attack-the-premise`, `boundary-discipline`, `build-the-lever`, `encode-lessons-in-structure`, `exhaust-the-design-space`, `experience-first`, `explain-the-number`, `fix-root-causes`, `foundational-thinking`, `guard-the-context-window`, `laziness-protocol`, `make-operations-idempotent`, `migrate-callers-then-delete-legacy-apis`, `minimize-reader-load`, `model-the-domain`, `never-block-on-the-human`, `outcome-oriented-execution`, `prove-it-works`, `redesign-from-first-principles`, `separate-before-serializing-shared-state`, `sequence-verifiable-units`, `subtract-before-you-add`, `test-behavior-not-implementation`, `type-system-discipline`
 
 ## 12. The playbooks
 

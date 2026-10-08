@@ -1,5 +1,9 @@
 # The porting record
 
+Current upstream baseline: pstack 0.15.15, `cursor/plugins@ccb5507cec1546dc88135c1139c811e6c59115ba`.
+See the [65-file sync checklist](UPSTREAM-0.15.15.md) for this update. Earlier sections
+record the original port and its subsequent fixes.
+
 Every change made to upstream pstack, and why. Kept so the port can be re-derived when upstream
 moves, and so a reader can tell a portability fix from a rewrite of Lauren Tan's judgment.
 
